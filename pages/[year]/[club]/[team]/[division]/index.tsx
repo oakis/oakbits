@@ -3,11 +3,11 @@ import { Fragment, PropsWithChildren } from "react";
 import { Props, Params, Match } from "./config";
 
 const TableData = ({ children }: PropsWithChildren) => (
-  <td className="p-4">{children}</td>
+  <td className="p-4 text-center whitespace-nowrap">{children}</td>
 );
 
 const TableHead = ({ children }: PropsWithChildren) => (
-  <th className="p-4">{children}</th>
+  <th className="p-4 text-center">{children}</th>
 );
 
 export const getServerSideProps: GetServerSideProps<Props> = async (
@@ -109,62 +109,75 @@ export default function Page({
 
   return (
     <main className="container mx-auto flex justify-center">
-      <table className="max-w-5xl">
-        <tbody>
-          {matches.map((round) => (
-            <Fragment key={round[0].matchRoundId}>
-              <tr className="border">
-                <TableHead>Omgång {round[0].matchRoundId}</TableHead>
+      <table className="table-auto max-w-6xl">
+        {matches.map((round) => (
+          <Fragment key={round[0].matchRoundId}>
+            <thead>
+              <tr>
+                <th colSpan={7} className="p-4 text-left">
+                  Omgång {round[0].matchRoundId}
+                </th>
               </tr>
-              <>
-                {round.map((match) => (
-                  <tr key={match.matchId} className="border">
-                    <TableData>{formatDate(match.matchDateTime)}</TableData>
-                    <TableData>{renderTeams(match)}</TableData>
-                    <TableData>
-                      {match.matchVsResult}
-                      <br />({match.matchHomeTeamScore} -{" "}
-                      {match.matchAwayTeamScore})
-                    </TableData>
-                    <TableData>
-                      {match.matchOilPatternId !== 0 ? (
-                        <a
-                          href={`https://bits.swebowl.se/MiscDisplay/Oilpattern/${match.matchOilPatternId}`}
-                          target="_blank"
-                        >
-                          {match.matchOilPatternName}
-                        </a>
-                      ) : (
-                        match.matchOilPatternName
-                      )}
-                    </TableData>
-                    <TableData>
+              <tr className="border">
+                <TableHead>Tid</TableHead>
+                <TableHead>Match</TableHead>
+                <TableHead>Resultat</TableHead>
+                <TableHead>Oljeprofil</TableHead>
+                <TableHead>Matchinfo</TableHead>
+                <TableHead>Hall</TableHead>
+                <TableHead>Scoring</TableHead>
+              </tr>
+            </thead>
+            <tbody>
+              {round.map((match) => (
+                <tr key={match.matchId} className="border">
+                  <TableData>{formatDate(match.matchDateTime)}</TableData>
+                  <TableData>{renderTeams(match)}</TableData>
+                  <TableData>
+                    {match.matchVsResult}
+                    <br />
+                    <i className="text-xs">
+                      ({match.matchHomeTeamScore} - {match.matchAwayTeamScore})
+                    </i>
+                  </TableData>
+                  <TableData>
+                    {match.matchOilPatternId !== 0 ? (
                       <a
-                        href={`https://bits.swebowl.se/match-detail?matchid=${match.matchId}`}
+                        href={`https://bits.swebowl.se/MiscDisplay/Oilpattern/${match.matchOilPatternId}`}
                         target="_blank"
                       >
-                        {match.matchId}
+                        {match.matchOilPatternName}
                       </a>
-                    </TableData>
-                    <TableData>
-                      <a
-                        href={`https://bits.swebowl.se/seriespel?hallId=${match.matchHallId}`}
-                        target="_blank"
-                      >
-                        {match.matchHallName}
-                      </a>
-                    </TableData>
-                    <TableData>
-                      <a href={match.matchHallOnlineScoringUrl} target="_blank">
-                        Scoring
-                      </a>
-                    </TableData>
-                  </tr>
-                ))}
-              </>
-            </Fragment>
-          ))}
-        </tbody>
+                    ) : (
+                      match.matchOilPatternName
+                    )}
+                  </TableData>
+                  <TableData>
+                    <a
+                      href={`https://bits.swebowl.se/match-detail?matchid=${match.matchId}`}
+                      target="_blank"
+                    >
+                      {match.matchId}
+                    </a>
+                  </TableData>
+                  <TableData>
+                    <a
+                      href={`https://bits.swebowl.se/seriespel?hallId=${match.matchHallId}`}
+                      target="_blank"
+                    >
+                      {match.matchHallName}
+                    </a>
+                  </TableData>
+                  <TableData>
+                    <a href={match.matchHallOnlineScoringUrl} target="_blank">
+                      Scoring
+                    </a>
+                  </TableData>
+                </tr>
+              ))}
+            </tbody>
+          </Fragment>
+        ))}
       </table>
     </main>
   );
