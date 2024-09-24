@@ -1,7 +1,12 @@
 import { Match } from "@/types";
-import TableHead from "./Table/TableHead";
+import TableHeadCell from "./Table/TableHeadCell";
 import TableCell from "./Table/TableCell";
 import clsx from "clsx";
+import TableHeader from "./Table/TableHeader";
+import Table from "./Table/Table";
+import TableHead from "./Table/TableHead";
+import TableBody from "./Table/TableBody";
+import { getTeamUrl, isSelectedTeam } from "@/utils";
 
 interface IMatches {
   matches: Match[][];
@@ -9,9 +14,7 @@ interface IMatches {
 }
 
 const Matches = ({ matches, team }: IMatches) => {
-  const isSelectedTeam = (teamId: number) => teamId.toString() === team;
-
-  const formatDate = (str: string) => {
+    const formatDate = (str: string) => {
     const date = new Date(str);
     return Intl.DateTimeFormat("sv-SE", {
       month: "numeric",
@@ -21,18 +24,12 @@ const Matches = ({ matches, team }: IMatches) => {
     }).format(date);
   };
 
-  const getTeamUrl = (
-    season: number,
-    clubId: number,
-    teamId: number,
-    divisionId: number
-  ) =>
-    `https://bits.swebowl.se/team-detail?seasonId=${season}&clubId=${clubId}&teamId=${teamId}&divisionId=${divisionId}`;
+
 
   const renderTeams = (match: Match) => (
     <>
       <a
-        className={isSelectedTeam(match.matchHomeTeamId) ? "font-bold" : ""}
+        className={isSelectedTeam(match.matchHomeTeamId, team) ? "font-bold" : ""}
         href={getTeamUrl(
           match.matchSeason,
           match.homeTeamClubId,
@@ -45,7 +42,7 @@ const Matches = ({ matches, team }: IMatches) => {
       </a>{" "}
       -{" "}
       <a
-        className={isSelectedTeam(match.matchAwayTeamId) ? "font-bold" : ""}
+        className={isSelectedTeam(match.matchAwayTeamId, team) ? "font-bold" : ""}
         href={getTeamUrl(
           match.matchSeason,
           match.awayTeamClubId,
@@ -60,20 +57,20 @@ const Matches = ({ matches, team }: IMatches) => {
   );
 
   return (
-    <table className="table-auto max-w-6xl">
-      <thead>
-        <tr className="border sticky top-0 bg-slate-600 text-slate-100">
-          <TableHead>Tid</TableHead>
-          <TableHead>Match</TableHead>
-          <TableHead>Resultat</TableHead>
-          <TableHead>Oljeprofil</TableHead>
-          <TableHead>Matchinfo</TableHead>
-          <TableHead>Hall</TableHead>
-          <TableHead>Scoring</TableHead>
-        </tr>
-      </thead>
+    <Table>
+      <TableHead>
+        <TableHeader>
+          <TableHeadCell>Tid</TableHeadCell>
+          <TableHeadCell>Match</TableHeadCell>
+          <TableHeadCell>Resultat</TableHeadCell>
+          <TableHeadCell>Oljeprofil</TableHeadCell>
+          <TableHeadCell>Matchinfo</TableHeadCell>
+          <TableHeadCell>Hall</TableHeadCell>
+          <TableHeadCell>Scoring</TableHeadCell>
+        </TableHeader>
+      </TableHead>
       {matches.map((round) => (
-        <tbody key={round[0].matchRoundId}>
+        <TableBody key={round[0].matchRoundId}>
           <tr className="sticky top-14">
             <th
               colSpan={7}
@@ -131,9 +128,9 @@ const Matches = ({ matches, team }: IMatches) => {
               </TableCell>
             </tr>
           ))}
-        </tbody>
+        </TableBody>
       ))}
-    </table>
+    </Table>
   );
 };
 

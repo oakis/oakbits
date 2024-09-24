@@ -72,6 +72,8 @@ export interface Match {
   matchDivisionSeasonConfirmed: boolean;
 }
 
+export type Divider = "S" | null;
+
 export interface Standing {
   standingsTeamId: number;
   standingsTeamName: string;
@@ -85,7 +87,7 @@ export interface Standing {
   standingsPoints: number;
   standingsTotal: string;
   standingsIsLastPositionBeforeDivider: boolean;
-  standingsDividerType: string;
+  standingsDividerType: Divider;
   standingsBoss: number;
   cupId: number;
   divisionLeagueId: number;
