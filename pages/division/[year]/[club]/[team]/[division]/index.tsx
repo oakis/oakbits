@@ -8,7 +8,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
   context
 ) => {
   const { year, division, club, team } = context.params as Params;
-  const apiKey = "62fcl8gPUMXSQGW1t2Y8mc2zeTk97vbd";
+  const apiKey = process.env.APIKEY;
 
   const flatMatches: Match[] = await fetch(
     `https://api.swebowl.se/api/v1/Match?APIKey=${apiKey}&divisionId=${division}&seasonId=${year}&matchStatus=`,
@@ -41,8 +41,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
     }
   ).then((data) => data.json());
 
-  console.log(standings);
-
   return {
     props: { matches, standings, params: { year, division, club, team } },
   };
@@ -59,8 +57,14 @@ export default function Page({
         standings={standings}
         team={params.team}
         season={params.year}
+        divisionName={matches[0][0].matchDivisionName}
       />
-      <Matches matches={matches} team={params.team} />
+      <Matches
+        matches={matches}
+        team={params.team}
+        season={params.year}
+        divisionName={matches[0][0].matchDivisionName}
+      />
     </main>
   );
 }

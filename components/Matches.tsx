@@ -11,10 +11,12 @@ import { getTeamUrl, isSelectedTeam } from "@/utils";
 interface IMatches {
   matches: Match[][];
   team: string;
+  divisionName: string;
+  season: string;
 }
 
-const Matches = ({ matches, team }: IMatches) => {
-    const formatDate = (str: string) => {
+const Matches = ({ matches, team, divisionName, season }: IMatches) => {
+  const formatDate = (str: string) => {
     const date = new Date(str);
     return Intl.DateTimeFormat("sv-SE", {
       month: "numeric",
@@ -24,12 +26,12 @@ const Matches = ({ matches, team }: IMatches) => {
     }).format(date);
   };
 
-
-
   const renderTeams = (match: Match) => (
     <>
       <a
-        className={isSelectedTeam(match.matchHomeTeamId, team) ? "font-bold" : ""}
+        className={
+          isSelectedTeam(match.matchHomeTeamId, team) ? "font-bold" : ""
+        }
         href={getTeamUrl(
           match.matchSeason,
           match.homeTeamClubId,
@@ -42,7 +44,9 @@ const Matches = ({ matches, team }: IMatches) => {
       </a>{" "}
       -{" "}
       <a
-        className={isSelectedTeam(match.matchAwayTeamId, team) ? "font-bold" : ""}
+        className={
+          isSelectedTeam(match.matchAwayTeamId, team) ? "font-bold" : ""
+        }
         href={getTeamUrl(
           match.matchSeason,
           match.awayTeamClubId,
@@ -57,80 +61,83 @@ const Matches = ({ matches, team }: IMatches) => {
   );
 
   return (
-    <Table>
-      <TableHead>
-        <TableHeader>
-          <TableHeadCell>Tid</TableHeadCell>
-          <TableHeadCell>Match</TableHeadCell>
-          <TableHeadCell>Resultat</TableHeadCell>
-          <TableHeadCell>Oljeprofil</TableHeadCell>
-          <TableHeadCell>Matchinfo</TableHeadCell>
-          <TableHeadCell>Hall</TableHeadCell>
-          <TableHeadCell>Scoring</TableHeadCell>
-        </TableHeader>
-      </TableHead>
-      {matches.map((round) => (
-        <TableBody key={round[0].matchRoundId}>
-          <tr className="sticky top-14">
-            <th
-              colSpan={7}
-              className="p-4 text-left bg-slate-600 text-slate-100"
-            >
-              Omgång {round[0].matchRoundId}
-            </th>
-          </tr>
-          {round.map((match, i) => (
-            <tr
-              key={match.matchId}
-              className={clsx("border", i % 2 === 0 && "bg-slate-100")}
-            >
-              <TableCell>{formatDate(match.matchDateTime)}</TableCell>
-              <TableCell>{renderTeams(match)}</TableCell>
-              <TableCell>
-                {match.matchVsResult}
-                <br />
-                <i className="text-xs">
-                  ({match.matchHomeTeamScore} - {match.matchAwayTeamScore})
-                </i>
-              </TableCell>
-              <TableCell>
-                {match.matchOilPatternId !== 0 ? (
+    <div>
+      <h2 className="text-xl pb-2">
+        {divisionName} {season}
+      </h2>
+      <Table>
+        <TableHead>
+          <TableHeader>
+            <TableHeadCell>Tid</TableHeadCell>
+            <TableHeadCell>Match</TableHeadCell>
+            <TableHeadCell>Resultat</TableHeadCell>
+            <TableHeadCell>Oljeprofil</TableHeadCell>
+            <TableHeadCell>Hall</TableHeadCell>
+            <TableHeadCell>Scoring</TableHeadCell>
+          </TableHeader>
+        </TableHead>
+        {matches.map((round) => (
+          <TableBody key={round[0].matchRoundId}>
+            <tr className="sticky top-14">
+              <th
+                colSpan={7}
+                className="p-4 text-left bg-slate-500 text-slate-100"
+              >
+                Omgång {round[0].matchRoundId}
+              </th>
+            </tr>
+            {round.map((match, i) => (
+              <tr
+                key={match.matchId}
+                className={clsx("border", i % 2 === 0 && "bg-slate-100")}
+              >
+                <TableCell>
                   <a
-                    href={`https://bits.swebowl.se/MiscDisplay/Oilpattern/${match.matchOilPatternId}`}
+                    href={`https://bits.swebowl.se/match-detail?matchid=${match.matchId}`}
                     target="_blank"
                   >
-                    {match.matchOilPatternName}
+                    {formatDate(match.matchDateTime)}
                   </a>
-                ) : (
-                  match.matchOilPatternName
-                )}
-              </TableCell>
-              <TableCell>
-                <a
-                  href={`https://bits.swebowl.se/match-detail?matchid=${match.matchId}`}
-                  target="_blank"
-                >
-                  {match.matchId}
-                </a>
-              </TableCell>
-              <TableCell>
-                <a
-                  href={`https://bits.swebowl.se/seriespel?hallId=${match.matchHallId}`}
-                  target="_blank"
-                >
-                  {match.matchHallName}
-                </a>
-              </TableCell>
-              <TableCell>
-                <a href={match.matchHallOnlineScoringUrl} target="_blank">
-                  Scoring
-                </a>
-              </TableCell>
-            </tr>
-          ))}
-        </TableBody>
-      ))}
-    </Table>
+                </TableCell>
+                <TableCell>{renderTeams(match)}</TableCell>
+                <TableCell>
+                  {match.matchVsResult}
+                  <br />
+                  <i className="text-xs">
+                    ({match.matchHomeTeamScore} - {match.matchAwayTeamScore})
+                  </i>
+                </TableCell>
+                <TableCell>
+                  {match.matchOilPatternId !== 0 ? (
+                    <a
+                      href={`https://bits.swebowl.se/MiscDisplay/Oilpattern/${match.matchOilPatternId}`}
+                      target="_blank"
+                    >
+                      {match.matchOilPatternName}
+                    </a>
+                  ) : (
+                    match.matchOilPatternName
+                  )}
+                </TableCell>
+                <TableCell>
+                  <a
+                    href={`https://bits.swebowl.se/seriespel?hallId=${match.matchHallId}`}
+                    target="_blank"
+                  >
+                    {match.matchHallName}
+                  </a>
+                </TableCell>
+                <TableCell>
+                  <a href={match.matchHallOnlineScoringUrl} target="_blank">
+                    Scoring
+                  </a>
+                </TableCell>
+              </tr>
+            ))}
+          </TableBody>
+        ))}
+      </Table>
+    </div>
   );
 };
 
