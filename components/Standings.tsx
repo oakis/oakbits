@@ -8,7 +8,7 @@ import { MdOutlineArrowDropDown, MdOutlineArrowDropUp } from "react-icons/md";
 import TableHead from "./Table/TableHead";
 import TableBody from "./Table/TableBody";
 import { getTeamUrl, isSelectedTeam } from "@/utils";
-import ClubThumbnail from "./ClubThumbnail";
+import ClubLogo from "./ClubLogo";
 
 interface IStandings {
   standings: Standing[];
@@ -69,7 +69,7 @@ const Standings = ({ standings, team, season, divisionName }: IStandings) => {
             >
               <TableCell classes="!text-left flex h-14">
                 <span className="flex items-center gap-3">
-                  <ClubThumbnail
+                  <ClubLogo
                     id={standing.clubTeamClubId}
                     name={standing.standingsTeamName}
                   />

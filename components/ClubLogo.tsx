@@ -4,9 +4,16 @@ import { useState } from "react";
 interface IClubThumbnail {
   id: string | number;
   name: string;
+  width?: number;
+  height?: number;
 }
 
-const ClubThumbnail = ({ id, name }: IClubThumbnail) => {
+const ClubLogo = ({
+  id,
+  name,
+  width = 32,
+  height = 32,
+}: IClubThumbnail) => {
   const [error, setError] = useState(false);
   const url = `https://bits.swebowl.se/images/ClubLogo/${id}.png`;
   return error ? (
@@ -15,11 +22,11 @@ const ClubThumbnail = ({ id, name }: IClubThumbnail) => {
     <Image
       src={url}
       alt={`Klubbmärke ${name}`}
-      width={32}
-      height={32}
+      width={width}
+      height={height}
       onError={() => setError(true)}
     />
   );
 };
 
-export default ClubThumbnail;
+export default ClubLogo;

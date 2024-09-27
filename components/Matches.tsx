@@ -7,6 +7,7 @@ import Table from "./Table/Table";
 import TableHead from "./Table/TableHead";
 import TableBody from "./Table/TableBody";
 import { getTeamUrl, isSelectedTeam } from "@/utils";
+import Link from "next/link";
 
 interface IMatches {
   matches: Match[][];
@@ -92,12 +93,11 @@ const Matches = ({ matches, team, divisionName, season }: IMatches) => {
                 className={clsx("border", i % 2 === 0 && "bg-slate-100")}
               >
                 <TableCell>
-                  <a
-                    href={`https://bits.swebowl.se/match-detail?matchid=${match.matchId}`}
-                    target="_blank"
+                  <Link
+                    href={`/match/${match.matchId}`}
                   >
                     {formatDate(match.matchDateTime)}
-                  </a>
+                  </Link>
                 </TableCell>
                 <TableCell>{renderTeams(match)}</TableCell>
                 <TableCell>

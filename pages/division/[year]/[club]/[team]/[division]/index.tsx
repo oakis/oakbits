@@ -3,11 +3,10 @@ import { Props, Params } from "./config";
 import Matches from "@/components/Matches";
 import { Match } from "@/types";
 import Standings from "@/components/Standings";
+import Main from "@/components/Main";
 
-export const getServerSideProps: GetServerSideProps<Props> = async (
-  context
-) => {
-  const { year, division, club, team } = context.params as Params;
+export const getServerSideProps = (async (context) => {
+  const { year, division, club, team } = context.params!;
   const apiKey = process.env.APIKEY;
 
   const flatMatches: Match[] = await fetch(
@@ -44,7 +43,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
   return {
     props: { matches, standings, params: { year, division, club, team } },
   };
-};
+}) satisfies GetServerSideProps<Props, Params>;
 
 export default function Page({
   matches,
@@ -52,7 +51,7 @@ export default function Page({
   params,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
-    <main className="container mx-auto flex flex-col justify-center py-8 gap-12">
+    <Main>
       <Standings
         standings={standings}
         team={params.team}
@@ -65,6 +64,6 @@ export default function Page({
         season={params.year}
         divisionName={matches[0][0].matchDivisionName}
       />
-    </main>
+    </Main>
   );
 }
