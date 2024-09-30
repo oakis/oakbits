@@ -9,6 +9,7 @@ import TableHead from "./Table/TableHead";
 import TableBody from "./Table/TableBody";
 import { getTeamUrl, isSelectedTeam } from "@/utils";
 import ClubLogo from "./ClubLogo";
+import HeaderText from "./HeaderText";
 
 interface IStandings {
   standings: Standing[];
@@ -40,9 +41,9 @@ const hasDemotion = (position: number, standings: Standing[]) =>
 const Standings = ({ standings, team, season, divisionName }: IStandings) => {
   return (
     <div>
-      <h2 className="text-xl pb-2">
+      <HeaderText>
         {divisionName} {season}
-      </h2>
+      </HeaderText>
       <Table>
         <TableHead>
           <TableHeader>
@@ -67,35 +68,43 @@ const Standings = ({ standings, team, season, divisionName }: IStandings) => {
                   "border-b-slate-800 border-b-2"
               )}
             >
-              <TableCell classes="!text-left flex h-14">
+              <TableCell classes="!text-left">
+                <span className="flex items-center">
                 <span className="flex items-center gap-3">
-                  <ClubLogo
-                    id={standing.clubTeamClubId}
-                    name={standing.standingsTeamName}
-                  />
-                  <a
-                    className={
-                      isSelectedTeam(standing.standingsTeamId, team)
-                        ? "font-bold"
-                        : ""
-                    }
-                    href={getTeamUrl(
-                      season,
-                      standing.clubTeamClubId,
-                      standing.standingsTeamId,
-                      standing.divisionLeagueId
-                    )}
-                    target="_blank"
-                  >
-                    {standing.standingsTeamName}
-                  </a>
+                    <ClubLogo
+                      id={standing.clubTeamClubId}
+                      name={standing.standingsTeamName}
+                    />
+                    <a
+                      className={
+                        isSelectedTeam(standing.standingsTeamId, team)
+                          ? "font-bold"
+                          : ""
+                      }
+                      href={getTeamUrl(
+                        season,
+                        standing.clubTeamClubId,
+                        standing.standingsTeamId,
+                        standing.divisionLeagueId
+                      )}
+                      target="_blank"
+                    >
+                      {standing.standingsTeamName}
+                    </a>
+                  </span>
+                  {hasPromotion(i, standings) && (
+                    <MdOutlineArrowDropUp
+                      size={32}
+                      className="text-green-400"
+                    />
+                  )}
+                  {hasDemotion(i, standings) && (
+                    <MdOutlineArrowDropDown
+                      size={32}
+                      className="text-red-400"
+                    />
+                  )}
                 </span>
-                {hasPromotion(i, standings) && (
-                  <MdOutlineArrowDropUp size={32} className="text-green-400" />
-                )}
-                {hasDemotion(i, standings) && (
-                  <MdOutlineArrowDropDown size={32} className="text-red-400" />
-                )}
               </TableCell>
               <TableCell>{standing.standingsMatches}</TableCell>
               <TableCell>{standing.standingsWin}</TableCell>

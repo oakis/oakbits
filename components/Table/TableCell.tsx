@@ -6,7 +6,7 @@ interface ITableCell extends PropsWithChildren {
 }
 
 const TableCell = ({ children, classes }: ITableCell) => (
-  <td className={clsx("p-4 text-center whitespace-nowrap", classes)}>
+  <td className={clsx("h-14 px-4 text-center whitespace-nowrap", classes)}>
     {children}
   </td>
 );

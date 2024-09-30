@@ -10,6 +10,8 @@ export interface Params extends ParsedUrlQuery {
 
 export interface Props {
   matches: Match[][];
+  played: Match[];
+  upcoming: Match[];
   standings: Standing[];
   params: Params;
 }

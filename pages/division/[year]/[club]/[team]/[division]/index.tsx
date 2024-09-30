@@ -33,6 +33,21 @@ export const getServerSideProps = (async (context) => {
 
   const matches = Object.values(groupedMatches);
 
+  const currentRoundIndex =
+    matches.findIndex((matchArray) =>
+      matchArray.some((match) => !match.matchHasBeenPlayed)
+    ) ?? matches.length - 1;
+
+  const currentRound = matches[currentRoundIndex];
+  const isNewRound = currentRound.every(
+    (match) => !match.matchHasBeenPlayed
+  );
+
+  const played = isNewRound
+    ? matches[currentRoundIndex - 1]
+    : currentRound.filter((match) => match.matchHasBeenPlayed);
+  const upcoming = currentRound.filter((match) => !match.matchHasBeenPlayed);
+
   const standings = await fetch(
     `https://api.swebowl.se/api/v1/Standing?APIKey=${apiKey}&divisionId=${division}&seasonId=${year}`,
     {
@@ -41,7 +56,13 @@ export const getServerSideProps = (async (context) => {
   ).then((data) => data.json());
 
   return {
-    props: { matches, standings, params: { year, division, club, team } },
+    props: {
+      matches,
+      standings,
+      played,
+      upcoming,
+      params: { year, division, club, team },
+    },
   };
 }) satisfies GetServerSideProps<Props, Params>;
 
@@ -49,9 +70,16 @@ export default function Page({
   matches,
   standings,
   params,
+  played,
+  upcoming,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <Main>
+      <Matches
+        matches={[played]}
+        team={params.team}
+        header="Aktuella matcher"
+      />
       <Standings
         standings={standings}
         team={params.team}
@@ -59,11 +87,11 @@ export default function Page({
         divisionName={matches[0][0].matchDivisionName}
       />
       <Matches
-        matches={matches}
+        matches={[upcoming]}
         team={params.team}
-        season={params.year}
-        divisionName={matches[0][0].matchDivisionName}
+        header="Kommande matcher"
       />
+      <Matches matches={matches} team={params.team} header="Alla matcher" />
     </Main>
   );
 }

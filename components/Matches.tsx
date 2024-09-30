@@ -8,15 +8,15 @@ import TableHead from "./Table/TableHead";
 import TableBody from "./Table/TableBody";
 import { getTeamUrl, isSelectedTeam } from "@/utils";
 import Link from "next/link";
+import HeaderText from "./HeaderText";
 
 interface IMatches {
   matches: Match[][];
   team: string;
-  divisionName: string;
-  season: string;
+  header: string;
 }
 
-const Matches = ({ matches, team, divisionName, season }: IMatches) => {
+const Matches = ({ matches, team, header }: IMatches) => {
   const formatDate = (str: string) => {
     const date = new Date(str);
     return Intl.DateTimeFormat("sv-SE", {
@@ -63,9 +63,7 @@ const Matches = ({ matches, team, divisionName, season }: IMatches) => {
 
   return (
     <div>
-      <h2 className="text-xl pb-2">
-        {divisionName} {season}
-      </h2>
+      <HeaderText>{header}</HeaderText>
       <Table>
         <TableHead>
           <TableHeader>
@@ -90,21 +88,21 @@ const Matches = ({ matches, team, divisionName, season }: IMatches) => {
             {round.map((match, i) => (
               <tr
                 key={match.matchId}
-                className={clsx("border", i % 2 === 0 && "bg-slate-100")}
+                className={clsx("border", i % 2 === 0 && "bg-slate-100", "h-20")}
               >
                 <TableCell>
-                  <Link
-                    href={`/match/${match.matchId}`}
-                  >
+                  <Link href={`/match/${match.matchId}`}>
                     {formatDate(match.matchDateTime)}
                   </Link>
                 </TableCell>
                 <TableCell>{renderTeams(match)}</TableCell>
                 <TableCell>
-                  {match.matchVsResult}
+                  {match.matchHasBeenPlayed ? match.matchVsResult : "-"}
                   <br />
                   <i className="text-xs">
-                    ({match.matchHomeTeamScore} - {match.matchAwayTeamScore})
+                    {match.matchHasBeenPlayed
+                      ? `(${match.matchHomeTeamScore} - ${match.matchAwayTeamScore})`
+                      : null}
                   </i>
                 </TableCell>
                 <TableCell>
