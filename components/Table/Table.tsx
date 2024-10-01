@@ -1,11 +1,19 @@
+import clsx from "clsx";
 import { PropsWithChildren } from "react";
 
-const Table = ({ children }: PropsWithChildren) => (
+interface ITable extends PropsWithChildren {
+  classes?: string;
+  wrapperClasses?: string;
+}
+
+const Table = ({ children, classes, wrapperClasses }: ITable) => (
   <div
-    className="block overflow-auto whitespace-nowrap"
+    className={clsx("block overflow-auto whitespace-nowrap", wrapperClasses)}
     style={{ maxHeight: "calc(100vh - 64px)" }}
   >
-    <table className="table-auto w-full relative">{children}</table>
+    <table className={clsx("table-auto w-full relative", classes)}>
+      {children}
+    </table>
   </div>
 );
 

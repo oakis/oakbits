@@ -1,7 +1,12 @@
+import clsx from "clsx";
 import { PropsWithChildren } from "react";
 
-const TableHead = ({ children }: PropsWithChildren) => (
-  <thead>{children}</thead>
+interface ITableHead extends PropsWithChildren {
+  classes?: string;
+}
+
+const TableHead = ({ children, classes }: ITableHead) => (
+  <thead className={clsx(classes)}>{children}</thead>
 );
 
 export default TableHead;

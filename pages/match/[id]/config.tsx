@@ -4,7 +4,7 @@ export interface Params extends ParsedUrlQuery {
   id: string;
 }
 
-export interface GameStats {
+export interface GameInfo {
   dayOfWeek: string;
   divisionIsCup: boolean;
   matchId: number;
@@ -220,8 +220,56 @@ export interface PlayerStats {
   playerListAway: Player[];
 }
 
+export interface GameStatDetail {
+  squadId: number;
+  teamScore: number;
+  teamRP: number;
+}
+
+export interface GameStatsData {
+  matchHeadHomeTeamResult: number;
+  matchHeadAwayTeamResult: number;
+  matchHeadHomeTotalScore: number;
+  matchHeadAwayTotalScore: number;
+  matchHeadHomeTotalRp: number;
+  matchHeadAwayTotalRp: number;
+  homeHeadDetails: GameStatDetail[];
+  awayHeadDetails: GameStatDetail[];
+  matchHeadHomeTeamScoreRound1: number;
+  matchHeadHomeTeamScoreRound2: number;
+  matchHeadHomeTeamScoreRound3: number;
+  matchHeadHomeTeamScoreRound4: number;
+  matchHeadHomeTeamRankPointRound1: number;
+  matchHeadHomeTeamRankPointRound2: number;
+  matchHeadHomeTeamRankPointRound3: number;
+  matchHeadHomeTeamRankPointRound4: number;
+  matchHeadAwayTeamScoreRound1: number;
+  matchHeadAwayTeamScoreRound2: number;
+  matchHeadAwayTeamScoreRound3: number;
+  matchHeadAwayTeamScoreRound4: number;
+  matchHeadAwayTeamRankPointRound1: number;
+  matchHeadAwayTeamRankPointRound2: number;
+  matchHeadAwayTeamRankPointRound3: number;
+  matchHeadAwayTeamRankPointRound4: number;
+  matchHeadHomeTeamScore: number;
+  matchHeadAwayTeamScore: number;
+  matchHeadHomeTeamRankPoints: number;
+  matchHeadAwayTeamRankPoints: number;
+}
+
+export interface GameStatsRow {
+  series: number;
+  homeScore: number;
+  homeRp: number;
+  awayScore: number;
+  awayRp: number;
+}
+
+export type GameStats = GameStatsRow[];
+
 export interface Props {
   playerStats: PlayerStats;
   scores: Scores;
+  gameInfo: GameInfo;
   gameStats: GameStats;
 }
