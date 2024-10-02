@@ -70,8 +70,11 @@ const Standings = ({ standings, team, season, divisionName }: IStandings) => {
             >
               <TableCell classes="!text-left">
                 <span className="flex items-center">
-                <span className="flex items-center gap-3">
+                  <span className="flex items-center gap-3">
                     <ClubLogo
+                      type="fixed"
+                      height={32}
+                      width={32}
                       id={standing.clubTeamClubId}
                       name={standing.standingsTeamName}
                     />

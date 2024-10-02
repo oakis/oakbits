@@ -38,26 +38,26 @@ const MatchResults = ({ gameInfo, gameStats }: IMatchResults) => {
             >
               <TableCell
                 classes={clsx(
-                  row.homeRp > row.awayRp && "font-bold",
+                  row.homeRp >= row.awayRp && "font-bold",
                   i === 0 && "rounded-tl-3xl"
                 )}
               >
                 {row.homeRp}
               </TableCell>
               <TableCell
-                classes={clsx(row.homeScore > row.awayScore && "font-bold")}
+                classes={clsx(row.homeScore >= row.awayScore && "font-bold")}
               >
                 {row.homeScore}
               </TableCell>
               <TableCell classes="text-2xl">{row.series}</TableCell>
               <TableCell
-                classes={clsx(row.homeScore < row.awayScore && "font-bold")}
+                classes={clsx(row.homeScore <= row.awayScore && "font-bold")}
               >
                 {row.awayScore}
               </TableCell>
               <TableCell
                 classes={clsx(
-                  row.homeRp < row.awayRp && "font-bold",
+                  row.homeRp <= row.awayRp && "font-bold",
                   i === 0 && "rounded-tr-3xl"
                 )}
               >
@@ -68,7 +68,7 @@ const MatchResults = ({ gameInfo, gameStats }: IMatchResults) => {
           <TableRow index={0} classes="rounded-3xl border-none">
             <TableCell
               classes={clsx(
-                gameInfo.matchHomeTeamResult > gameInfo.matchAwayTeamResult &&
+                gameInfo.matchHomeTeamResult >= gameInfo.matchAwayTeamResult &&
                   "font-bold",
                 "rounded-bl-3xl"
               )}
@@ -77,7 +77,7 @@ const MatchResults = ({ gameInfo, gameStats }: IMatchResults) => {
             </TableCell>
             <TableCell
               classes={clsx(
-                gameInfo.matchHomeTeamScore > gameInfo.matchAwayTeamScore &&
+                gameInfo.matchHomeTeamScore >= gameInfo.matchAwayTeamScore &&
                   "font-bold"
               )}
             >
@@ -86,7 +86,7 @@ const MatchResults = ({ gameInfo, gameStats }: IMatchResults) => {
             <TableCell classes="text-2xl">Total</TableCell>
             <TableCell
               classes={clsx(
-                gameInfo.matchHomeTeamScore < gameInfo.matchAwayTeamScore &&
+                gameInfo.matchHomeTeamScore <= gameInfo.matchAwayTeamScore &&
                   "font-bold"
               )}
             >
@@ -94,7 +94,7 @@ const MatchResults = ({ gameInfo, gameStats }: IMatchResults) => {
             </TableCell>
             <TableCell
               classes={clsx(
-                gameInfo.matchHomeTeamResult < gameInfo.matchAwayTeamResult &&
+                gameInfo.matchHomeTeamResult <= gameInfo.matchAwayTeamResult &&
                   "font-bold",
                 "rounded-br-3xl"
               )}

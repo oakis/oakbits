@@ -9,8 +9,8 @@ import {
   GameStats,
 } from "./config";
 import Main from "@/components/Main";
-import ClubLogo from "@/components/ClubLogo";
 import MatchResults from "@/components/MatchResults";
+import MatchTeam from "@/components/MatchTeam";
 
 export const getServerSideProps = (async (context) => {
   const { id } = context.params!;
@@ -37,8 +37,6 @@ export const getServerSideProps = (async (context) => {
     awayScore: gameStatsData.awayHeadDetails[i].teamScore,
     homeScore: gameStatsData.homeHeadDetails[i].teamScore,
   }));
-
-  console.log({ gameStats });
 
   const scores: Scores = await fetch(
     `https://api.swebowl.se/api/v1/matchResult/GetMatchScores?APIKey=${apiKey}&matchId=${id}`,
@@ -69,25 +67,15 @@ export default function Page({
   return (
     <Main>
       <div className="flex w-full sm:justify-between justify-center gap-4">
-        <div className="sm:flex flex-col items-center gap-3 hidden">
-          <h2 className="text-2xl">{gameInfo.matchHomeTeamName}</h2>
-          <ClubLogo
-            id={gameInfo.matchHomeClubId}
-            name={gameInfo.matchHomeTeamName}
-            height={140}
-            width={210}
-          />
-        </div>
+        <MatchTeam
+          teamName={gameInfo.matchHomeTeamName}
+          clubId={gameInfo.matchHomeClubId}
+        />
         <MatchResults gameInfo={gameInfo} gameStats={gameStats} />
-        <div className="sm:flex flex-col items-center gap-3 hidden">
-          <h2 className="text-2xl">{gameInfo.matchAwayTeamName}</h2>
-          <ClubLogo
-            id={gameInfo.matchAwayClubId}
-            name={gameInfo.matchAwayTeamName}
-            height={140}
-            width={210}
-          />
-        </div>
+        <MatchTeam
+          teamName={gameInfo.matchAwayTeamName}
+          clubId={gameInfo.matchAwayClubId}
+        />
       </div>
     </Main>
   );
