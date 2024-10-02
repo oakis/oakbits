@@ -11,6 +11,7 @@ import {
 import Main from "@/components/Main";
 import MatchResults from "@/components/MatchResults";
 import MatchTeam from "@/components/MatchTeam";
+import MatchPlayerStats from "@/components/MatchPlayerStats";
 
 export const getServerSideProps = (async (context) => {
   const { id } = context.params!;
@@ -77,6 +78,8 @@ export default function Page({
           clubId={gameInfo.matchAwayClubId}
         />
       </div>
+      <MatchPlayerStats stats={playerStats.playerListHome} />
+      <MatchPlayerStats stats={playerStats.playerListAway} />
     </Main>
   );
 }
