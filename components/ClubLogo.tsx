@@ -27,7 +27,7 @@ const ClubLogo = (props: IClubLogo) => {
         return (
           <Image
             src={url}
-            alt={`Klubbmärke ${name}`}
+            alt={`Klubbmärke ${props.name}`}
             width={props.width}
             height={props.height}
             onError={() => setError(true)}
@@ -37,7 +37,7 @@ const ClubLogo = (props: IClubLogo) => {
         return (
           <Image
             src={url}
-            alt={`Klubbmärke ${name}`}
+            alt={`Klubbmärke ${props.name}`}
             layout={props.layout}
             objectFit={props.objectFit}
             onError={() => setError(true)}

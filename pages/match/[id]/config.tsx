@@ -104,20 +104,20 @@ export interface GameInfo {
   divisionSeasonStartMatchDayNo: number;
 }
 
-interface BoardScore {
+export interface BoardScore {
   playerName: string;
   score: string;
   laneScore: string;
   scoreId: string;
 }
 
-interface Board {
+export interface Board {
   scores: BoardScore[];
   boardId: string;
   boardName: string;
 }
 
-interface Series {
+export interface Series {
   boards: Board[];
   serieId: string;
   serieName: string;

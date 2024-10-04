@@ -7,11 +7,15 @@ import {
   Scores,
   GameInfo,
   GameStats,
+  Series,
+  BoardScore,
+  Board,
 } from "./config";
 import Main from "@/components/Main";
 import MatchResults from "@/components/MatchResults";
 import MatchTeam from "@/components/MatchTeam";
 import MatchPlayerStats from "@/components/MatchPlayerStats";
+import MatchBoardScores from "@/components/MatchBoardScores";
 
 export const getServerSideProps = (async (context) => {
   const { id } = context.params!;
@@ -39,12 +43,39 @@ export const getServerSideProps = (async (context) => {
     homeScore: gameStatsData.homeHeadDetails[i].teamScore,
   }));
 
-  const scores: Scores = await fetch(
+  const scoresData: Scores = await fetch(
     `https://api.swebowl.se/api/v1/matchResult/GetMatchScores?APIKey=${apiKey}&matchId=${id}`,
     {
       referrer: "https://bits.swebowl.se",
     }
   ).then((data) => data.json());
+
+  const createDynamicGroups = (dataArray: Series[]): Series[] => {
+    const mappedData = dataArray.map((serie) => {
+      const numOfPlayers = serie.boards[0].scores.length;
+
+      const newBoards: Board[] = Array.from(
+        { length: numOfPlayers },
+        (_, i) => ({
+          scores: serie.boards.map((board) => board.scores[i]),
+          boardId: "",
+          boardName: "",
+        })
+      );
+
+      return {
+        ...serie,
+        boards: newBoards,
+      };
+    });
+
+    return mappedData;
+  };
+
+  const scores: Scores = {
+    ...scoresData,
+    series: createDynamicGroups(scoresData.series),
+  };
 
   const playerStats: PlayerStats = await fetch(
     `https://api.swebowl.se/api/v1/matchResult/GetMatchResults?APIKey=${apiKey}&matchId=${id}&matchSchemeId=${gameInfo.matchSchemeId}`,
@@ -64,7 +95,7 @@ export default function Page({
   playerStats,
   scores,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  console.log(gameInfo);
+  console.log(scores);
   return (
     <Main>
       <div className="flex w-full sm:justify-between justify-center gap-4">
@@ -78,8 +109,15 @@ export default function Page({
           clubId={gameInfo.matchAwayClubId}
         />
       </div>
-      <MatchPlayerStats stats={playerStats.playerListHome} />
-      <MatchPlayerStats stats={playerStats.playerListAway} />
+      <MatchBoardScores scores={scores} />
+      <MatchPlayerStats
+        stats={playerStats.playerListHome}
+        teamName={gameInfo.matchHomeTeamName}
+      />
+      <MatchPlayerStats
+        stats={playerStats.playerListAway}
+        teamName={gameInfo.matchAwayTeamName}
+      />
     </Main>
   );
 }

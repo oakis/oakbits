@@ -8,33 +8,38 @@ import TableCell from "./Table/TableCell";
 
 interface IPlayerStats {
   stats: Player[];
+  teamName: string;
 }
 
-const MatchPlayerStats = ({ stats }: IPlayerStats) => {
+const MatchPlayerStats = ({ stats, teamName }: IPlayerStats) => {
   return (
     <Table>
       <TableHead>
-        <TableHeadCell></TableHeadCell>
-        <TableHeadCell classes="!text-left" colSpan={8}>
-          Serier
-        </TableHeadCell>
-        <TableHeadCell classes="!text-left" colSpan={3}>
-          Ranking
-        </TableHeadCell>
+        <TableRow index={0}>
+          <TableHeadCell classes="!text-left">{teamName}</TableHeadCell>
+          <TableHeadCell classes="!text-left" colSpan={7}>
+            Serier
+          </TableHeadCell>
+          <TableHeadCell classes="!text-left" colSpan={4}>
+            Ranking
+          </TableHeadCell>
+        </TableRow>
       </TableHead>
       <TableHead>
-        <TableHeadCell classes="!text-left">Spelare</TableHeadCell>
-        <TableHeadCell>1</TableHeadCell>
-        <TableHeadCell>2</TableHeadCell>
-        <TableHeadCell>3</TableHeadCell>
-        <TableHeadCell>4</TableHeadCell>
-        <TableHeadCell>Resultat</TableHeadCell>
-        <TableHeadCell>Antal</TableHeadCell>
-        <TableHeadCell>BanP</TableHeadCell>
-        <TableHeadCell>Placering</TableHeadCell>
-        <TableHeadCell>RankP</TableHeadCell>
-        <TableHeadCell>BanRP</TableHeadCell>
-        <TableHeadCell>Totalt</TableHeadCell>
+        <TableRow index={1}>
+          <TableHeadCell classes="!text-left">Spelare</TableHeadCell>
+          <TableHeadCell>1</TableHeadCell>
+          <TableHeadCell>2</TableHeadCell>
+          <TableHeadCell>3</TableHeadCell>
+          <TableHeadCell>4</TableHeadCell>
+          <TableHeadCell>Resultat</TableHeadCell>
+          <TableHeadCell>Antal</TableHeadCell>
+          <TableHeadCell>BanP</TableHeadCell>
+          <TableHeadCell>Placering</TableHeadCell>
+          <TableHeadCell>RankP</TableHeadCell>
+          <TableHeadCell>BanRP</TableHeadCell>
+          <TableHeadCell>Totalt</TableHeadCell>
+        </TableRow>
       </TableHead>
       <TableBody>
         {stats.map((row, i) => (
