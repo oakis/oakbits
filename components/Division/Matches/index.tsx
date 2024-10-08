@@ -1,22 +1,23 @@
 import { Match } from "@/types";
-import TableHeadCell from "./Table/TableHeadCell";
-import TableCell from "./Table/TableCell";
+import Table, {
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeadCell,
+  TableHeader,
+} from "@/components/Table";
 import clsx from "clsx";
-import TableHeader from "./Table/TableHeader";
-import Table from "./Table/Table";
-import TableHead from "./Table/TableHead";
-import TableBody from "./Table/TableBody";
 import { getTeamUrl, isSelectedTeam } from "@/utils";
 import Link from "next/link";
-import HeaderText from "./HeaderText";
+import HeaderText from "@/components/HeaderText";
 
-interface IMatches {
+interface Props {
   matches: Match[][];
   team: string;
   header: string;
 }
 
-const Matches = ({ matches, team, header }: IMatches) => {
+const Matches = ({ matches, team, header }: Props) => {
   const formatDate = (str: string) => {
     const date = new Date(str);
     return Intl.DateTimeFormat("sv-SE", {
@@ -88,7 +89,11 @@ const Matches = ({ matches, team, header }: IMatches) => {
             {round.map((match, i) => (
               <tr
                 key={match.matchId}
-                className={clsx("border", i % 2 === 0 && "bg-slate-100", "h-20")}
+                className={clsx(
+                  "border",
+                  i % 2 === 0 && "bg-slate-100",
+                  "h-20"
+                )}
               >
                 <TableCell>
                   <Link href={`/match/${match.matchId}`}>

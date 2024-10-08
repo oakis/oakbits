@@ -1,12 +1,12 @@
 import clsx from "clsx";
 import { PropsWithChildren } from "react";
 
-interface ITableCell extends PropsWithChildren {
+interface Props extends PropsWithChildren {
   classes?: string;
   rowSpan?: number;
 }
 
-const TableCell = ({ children, classes, rowSpan }: ITableCell) => (
+const TableCell = ({ children, classes, rowSpan }: Props) => (
   <td
     rowSpan={rowSpan}
     className={clsx("h-14 px-4 text-center whitespace-nowrap", classes)}

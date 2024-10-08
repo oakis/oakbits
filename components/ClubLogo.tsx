@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useState } from "react";
 
-type IClubLogo =
+type Props =
   | {
       type: "fixed";
       id: string | number;
@@ -17,7 +17,7 @@ type IClubLogo =
       objectFit: string;
     };
 
-const ClubLogo = (props: IClubLogo) => {
+const ClubLogo = (props: Props) => {
   const [error, setError] = useState(false);
   const url = `https://bits.swebowl.se/images/ClubLogo/${props.id}.png`;
 

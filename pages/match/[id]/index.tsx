@@ -4,18 +4,17 @@ import {
   Params,
   GameStatsData,
   PlayerStats,
-  Scores,
+  IScores,
   GameInfo,
   GameStats,
   Series,
-  BoardScore,
   Board,
 } from "./config";
 import Main from "@/components/Main";
-import MatchResults from "@/components/MatchResults";
-import MatchTeam from "@/components/MatchTeam";
-import MatchPlayerStats from "@/components/MatchPlayerStats";
-import MatchBoardScores from "@/components/MatchBoardScores";
+import Results from "@/components/Match/Results";
+import Team from "@/components/Match/Team";
+import Stats from "@/components/Match/Stats";
+import Boards from "@/components/Match/Boards";
 
 export const getServerSideProps = (async (context) => {
   const { id } = context.params!;
@@ -43,7 +42,7 @@ export const getServerSideProps = (async (context) => {
     homeScore: gameStatsData.homeHeadDetails[i].teamScore,
   }));
 
-  const scoresData: Scores = await fetch(
+  const scoresData: IScores = await fetch(
     `https://api.swebowl.se/api/v1/matchResult/GetMatchScores?APIKey=${apiKey}&matchId=${id}`,
     {
       referrer: "https://bits.swebowl.se",
@@ -72,7 +71,7 @@ export const getServerSideProps = (async (context) => {
     return mappedData;
   };
 
-  const scores: Scores = {
+  const scores: IScores = {
     ...scoresData,
     series: createDynamicGroups(scoresData.series),
   };
@@ -99,22 +98,22 @@ export default function Page({
   return (
     <Main>
       <div className="flex w-full sm:justify-between justify-center gap-4">
-        <MatchTeam
+        <Team
           teamName={gameInfo.matchHomeTeamName}
           clubId={gameInfo.matchHomeClubId}
         />
-        <MatchResults gameInfo={gameInfo} gameStats={gameStats} />
-        <MatchTeam
+        <Results gameInfo={gameInfo} gameStats={gameStats} />
+        <Team
           teamName={gameInfo.matchAwayTeamName}
           clubId={gameInfo.matchAwayClubId}
         />
       </div>
-      <MatchBoardScores scores={scores} />
-      <MatchPlayerStats
+      <Boards scores={scores} />
+      <Stats
         stats={playerStats.playerListHome}
         teamName={gameInfo.matchHomeTeamName}
       />
-      <MatchPlayerStats
+      <Stats
         stats={playerStats.playerListAway}
         teamName={gameInfo.matchAwayTeamName}
       />

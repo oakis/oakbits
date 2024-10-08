@@ -123,7 +123,7 @@ export interface Series {
   serieName: string;
 }
 
-export interface Scores {
+export interface IScores {
   series: Series[];
   serieNames: string[];
   boardNames: string[];
@@ -269,7 +269,7 @@ export type GameStats = GameStatsRow[];
 
 export interface Props {
   playerStats: PlayerStats;
-  scores: Scores;
+  scores: IScores;
   gameInfo: GameInfo;
   gameStats: GameStats;
 }

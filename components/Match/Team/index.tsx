@@ -1,11 +1,11 @@
-import ClubLogo from "./ClubLogo";
+import ClubLogo from "@/components/ClubLogo";
 
-interface IMatchTeam {
+interface Props {
   teamName: string;
   clubId: number;
 }
 
-const MatchTeam = ({ teamName, clubId }: IMatchTeam) => {
+const MatchTeam = ({ teamName, clubId }: Props) => {
   return (
     <div className="sm:flex flex-col items-center gap-3 hidden w-48 h-48 relative">
       <h2 className="text-2xl">{teamName}</h2>

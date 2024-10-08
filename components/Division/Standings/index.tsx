@@ -1,17 +1,18 @@
-import TableHeadCell from "./Table/TableHeadCell";
-import TableCell from "./Table/TableCell";
-import TableHeader from "./Table/TableHeader";
-import Table from "./Table/Table";
+import Table, {
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeadCell,
+  TableHeader,
+} from "@/components/Table";
 import { Standing } from "@/types";
 import clsx from "clsx";
 import { MdOutlineArrowDropDown, MdOutlineArrowDropUp } from "react-icons/md";
-import TableHead from "./Table/TableHead";
-import TableBody from "./Table/TableBody";
 import { getTeamUrl, isSelectedTeam } from "@/utils";
-import ClubLogo from "./ClubLogo";
-import HeaderText from "./HeaderText";
+import HeaderText from "@/components/HeaderText";
+import ClubLogo from "@/components/ClubLogo";
 
-interface IStandings {
+interface Props {
   standings: Standing[];
   team: string;
   season: string;
@@ -38,7 +39,7 @@ const hasPromotion = (position: number, standings: Standing[]) =>
 const hasDemotion = (position: number, standings: Standing[]) =>
   position > getDemotions(standings);
 
-const Standings = ({ standings, team, season, divisionName }: IStandings) => {
+const Standings = ({ standings, team, season, divisionName }: Props) => {
   return (
     <div>
       <HeaderText>

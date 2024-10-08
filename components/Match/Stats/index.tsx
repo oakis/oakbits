@@ -1,17 +1,18 @@
+import Table, {
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeadCell,
+  TableRow,
+} from "@/components/Table";
 import { Player } from "@/pages/match/[id]/config";
-import Table from "./Table/Table";
-import TableHead from "./Table/TableHead";
-import TableHeadCell from "./Table/TableHeadCell";
-import TableBody from "./Table/TableBody";
-import TableRow from "./Table/TableRow";
-import TableCell from "./Table/TableCell";
 
-interface IPlayerStats {
+interface Props {
   stats: Player[];
   teamName: string;
 }
 
-const MatchPlayerStats = ({ stats, teamName }: IPlayerStats) => {
+const Stats = ({ stats, teamName }: Props) => {
   return (
     <Table>
       <TableHead>
@@ -66,4 +67,4 @@ const MatchPlayerStats = ({ stats, teamName }: IPlayerStats) => {
   );
 };
 
-export default MatchPlayerStats;
+export default Stats;

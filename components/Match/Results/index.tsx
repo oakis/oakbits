@@ -1,18 +1,19 @@
 import clsx from "clsx";
-import Table from "./Table/Table";
-import TableBody from "./Table/TableBody";
-import TableCell from "./Table/TableCell";
-import TableHead from "./Table/TableHead";
-import TableHeadCell from "./Table/TableHeadCell";
-import TableRow from "./Table/TableRow";
+import Table, {
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeadCell,
+  TableRow,
+} from "@/components/Table";
 import { GameInfo, GameStats } from "@/pages/match/[id]/config";
 
-interface IMatchResults {
+interface Props {
   gameInfo: GameInfo;
   gameStats: GameStats;
 }
 
-const MatchResults = ({ gameInfo, gameStats }: IMatchResults) => {
+const Results = ({ gameInfo, gameStats }: Props) => {
   return (
     <div className="flex flex-col gap-2 items-center">
       <span className="text-1xl uppercase">
@@ -108,4 +109,4 @@ const MatchResults = ({ gameInfo, gameStats }: IMatchResults) => {
   );
 };
 
-export default MatchResults;
+export default Results;

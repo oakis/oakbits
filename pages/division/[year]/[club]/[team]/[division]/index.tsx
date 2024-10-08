@@ -1,9 +1,9 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { Props, Params } from "./config";
-import Matches from "@/components/Matches";
-import { Match } from "@/types";
-import Standings from "@/components/Standings";
+import Matches from "@/components/Division/Matches";
+import Standings from "@/components/Division/Standings";
 import Main from "@/components/Main";
+import { Match } from "@/types";
 
 export const getServerSideProps = (async (context) => {
   const { year, division, club, team } = context.params!;
@@ -39,9 +39,7 @@ export const getServerSideProps = (async (context) => {
     ) ?? matches.length - 1;
 
   const currentRound = matches[currentRoundIndex];
-  const isNewRound = currentRound.every(
-    (match) => !match.matchHasBeenPlayed
-  );
+  const isNewRound = currentRound.every((match) => !match.matchHasBeenPlayed);
 
   const played = isNewRound
     ? matches[currentRoundIndex - 1]

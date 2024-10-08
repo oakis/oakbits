@@ -1,7 +1,13 @@
 import clsx from "clsx";
 import { PropsWithChildren } from "react";
+import TableBody from "./TableBody";
+import TableCell from "./TableCell";
+import TableHead from "./TableHead";
+import TableHeadCell from "./TableHeadCell";
+import TableHeader from "./TableHeader";
+import TableRow from "./TableRow";
 
-interface ITable extends PropsWithChildren {
+interface Props extends PropsWithChildren {
   classes?: string;
   wrapperClasses?: string;
   autoHeight?: boolean;
@@ -12,7 +18,7 @@ const Table = ({
   classes,
   wrapperClasses,
   autoHeight = false,
-}: ITable) => (
+}: Props) => (
   <div
     className={clsx("block overflow-auto whitespace-nowrap", wrapperClasses)}
     style={autoHeight ? {} : { maxHeight: "calc(100vh - 64px)" }}
@@ -24,3 +30,12 @@ const Table = ({
 );
 
 export default Table;
+export {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeadCell,
+  TableHeader,
+  TableRow,
+};
