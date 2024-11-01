@@ -4,6 +4,9 @@ import Matches from "@/components/Division/Matches";
 import Standings from "@/components/Division/Standings";
 import Main from "@/components/Main";
 import { Match } from "@/types";
+import Header from "@/components/Header";
+
+// Gör Lag, Diff och P sticky i sidled. Övriga scrollbara.
 
 export const getServerSideProps = (async (context) => {
   const { year, division, club, team } = context.params!;
@@ -38,13 +41,17 @@ export const getServerSideProps = (async (context) => {
       matchArray.some((match) => !match.matchHasBeenPlayed)
     ) ?? matches.length - 1;
 
-  const currentRound = matches[currentRoundIndex];
+  const currentRound =
+    currentRoundIndex === -1 ? [] : matches[currentRoundIndex];
   const isNewRound = currentRound.every((match) => !match.matchHasBeenPlayed);
 
   const played = isNewRound
-    ? matches[currentRoundIndex - 1]
-    : currentRound.filter((match) => match.matchHasBeenPlayed);
-  const upcoming = currentRound.filter((match) => !match.matchHasBeenPlayed);
+    ? matches[currentRoundIndex - 1] ?? []
+    : currentRound.filter((match) => match.matchHasBeenPlayed) ?? [];
+  const upcoming =
+    currentRound.filter((match) => !match.matchHasBeenPlayed) ?? [];
+
+  console.log({ played, upcoming, isNewRound });
 
   const standings = await fetch(
     `https://api.swebowl.se/api/v1/Standing?APIKey=${apiKey}&divisionId=${division}&seasonId=${year}`,
@@ -72,24 +79,31 @@ export default function Page({
   upcoming,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
-    <Main>
-      <Matches
-        matches={[played]}
-        team={params.team}
-        header="Aktuella matcher"
-      />
-      <Standings
-        standings={standings}
-        team={params.team}
-        season={params.year}
-        divisionName={matches[0][0].matchDivisionName}
-      />
-      <Matches
-        matches={[upcoming]}
-        team={params.team}
-        header="Kommande matcher"
-      />
-      <Matches matches={matches} team={params.team} header="Alla matcher" />
-    </Main>
+    <>
+      <Header />
+      <Main>
+        {played.length > 0 && (
+          <Matches
+            matches={[played]}
+            team={params.team}
+            header="Aktuella matcher"
+          />
+        )}
+        <Standings
+          standings={standings}
+          team={params.team}
+          season={params.year}
+          divisionName={matches[0][0].matchDivisionName}
+        />
+        {upcoming.length > 0 && (
+          <Matches
+            matches={[upcoming]}
+            team={params.team}
+            header="Kommande matcher"
+          />
+        )}
+        <Matches matches={matches} team={params.team} header="Alla matcher" />
+      </Main>
+    </>
   );
 }

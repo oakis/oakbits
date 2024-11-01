@@ -94,7 +94,6 @@ export default function Page({
   playerStats,
   scores,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  console.log(scores);
   return (
     <Main>
       <div className="flex w-full sm:justify-between justify-center gap-4">

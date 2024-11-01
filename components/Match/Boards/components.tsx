@@ -50,11 +50,11 @@ export const Card = ({ board, boardI, rowI }: CardProps) => (
         )}
       >
         <div className="w-4/6">{score.playerName}</div>
-        <div className="w-1/6 text-right">{score.score}</div>
+        <div className="w-1/6 text-left">{score.score}</div>
         {scoreI % 2 !== 0 && (
           <div
             className={clsx(
-              "w-1/6 h-10 text-right",
+              "w-1/6 h-10 text-center",
               scoreI === findIndexOfHighestScore(board.scores) && "font-bold"
             )}
             style={{ marginTop: "-20px" }}
