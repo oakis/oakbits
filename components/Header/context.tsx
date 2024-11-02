@@ -6,9 +6,7 @@ import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
 import {
   createContext,
-  Dispatch,
   PropsWithChildren,
-  SetStateAction,
   useContext,
   useEffect,
   useState,
@@ -17,44 +15,48 @@ import {
 interface HeaderContextType {
   season: string;
   seasons: ISeason[];
-  setSeason: Dispatch<SetStateAction<string>>;
+  setSeason: (str: string) => void;
   club: string;
   clubs: IClub[];
-  setClub: Dispatch<SetStateAction<string>>;
+  setClub: (str: string) => void;
   team: string;
   teams: ITeam[];
-  setTeam: Dispatch<SetStateAction<string>>;
+  setTeam: (str: string) => void;
   division: string;
   divisions: IDivision[];
-  setDivision: Dispatch<SetStateAction<string>>;
+  setDivision: (str: string) => void;
 }
 
 const HeaderContext = createContext({} as HeaderContextType);
 
 export const HeaderContextProvider = ({ children }: PropsWithChildren) => {
-  const {
-    year: yearParam,
-    division: divisionParam,
-    club: clubParam,
-    team: teamParam,
-  } = useParams();
+  const params = useParams();
   const router = useRouter();
 
+  const yearParam = (params?.year as string) ?? "";
+  const divisionParam = (params?.division as string) ?? "";
+  const clubParam = (params?.club as string) ?? "";
+  const teamParam = (params?.team as string) ?? "";
+
   const [seasons, setSeasons] = useState<ISeason[]>([]);
-  const [season, setSeason] = useState(yearParam as string);
+  const [season, setSeason] = useState(yearParam);
   const [clubs, setClubs] = useState<IClub[]>([]);
-  const [club, setClub] = useState(clubParam as string);
+  const [club, setClub] = useState(clubParam);
   const [teams, setTeams] = useState<ITeam[]>([]);
-  const [team, setTeam] = useState(teamParam as string);
+  const [team, setTeam] = useState(teamParam);
   const [divisions, setDivisions] = useState<IDivision[]>([]);
-  const [division, setDivision] = useState(divisionParam as string);
+  const [division, setDivision] = useState(divisionParam);
 
   useEffect(() => {
     fetch(`/api/seasons`)
       .then((data) => data.json())
       .then((result: ISeason[]) => {
         setSeasons(result);
+        if (yearParam === "") {
+          setSeason(result[0].id.toString());
+        }
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -70,7 +72,7 @@ export const HeaderContextProvider = ({ children }: PropsWithChildren) => {
       .then((data) => data.json())
       .then((incomingTeams: ITeam[]) => {
         setTeams(incomingTeams);
-        if (club !== clubParam && incomingTeams.length > 0) {
+        if (club !== "" && club !== clubParam && incomingTeams.length > 0) {
           setTeam(incomingTeams[0].id.toString());
         }
       });
@@ -82,7 +84,7 @@ export const HeaderContextProvider = ({ children }: PropsWithChildren) => {
       .then((data) => data.json())
       .then((incomingDivs: IDivision[]) => {
         setDivisions(incomingDivs);
-        if (incomingDivs.length > 0) {
+        if (incomingDivs.length > 0 && season && club && team) {
           router.push(
             `/division/${season}/${club}/${team}/${incomingDivs[0].id}`
           );

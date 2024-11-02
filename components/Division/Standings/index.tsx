@@ -61,7 +61,7 @@ const Standings = ({ standings, team, season, divisionName }: Props) => {
         <TableBody>
           {standings.map((standing, i) => (
             <tr
-              key={standing.clubTeamClubId}
+              key={standing.standingsTeamId}
               className={clsx(
                 "border",
                 i % 2 === 0 && "bg-slate-100",

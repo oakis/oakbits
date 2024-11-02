@@ -51,8 +51,6 @@ export const getServerSideProps = (async (context) => {
   const upcoming =
     currentRound.filter((match) => !match.matchHasBeenPlayed) ?? [];
 
-  console.log({ played, upcoming, isNewRound });
-
   const standings = await fetch(
     `https://api.swebowl.se/api/v1/Standing?APIKey=${apiKey}&divisionId=${division}&seasonId=${year}`,
     {

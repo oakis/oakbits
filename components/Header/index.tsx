@@ -1,6 +1,5 @@
 import Club from "./Club";
 import { HeaderContextProvider } from "./context";
-import Division from "./Division";
 import Season from "./Season";
 import Team from "./Team";
 
@@ -12,7 +11,6 @@ export default function Header() {
           <Season />
           <Club />
           <Team />
-          <Division />
         </div>
       </div>
     </HeaderContextProvider>

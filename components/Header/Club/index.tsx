@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useHeaderContext } from "../context";
+import { MdClose } from "react-icons/md";
 
 const Club = () => {
   const { club, clubs, setClub } = useHeaderContext();
@@ -17,16 +18,22 @@ const Club = () => {
   const onSelect = (id: string) => {
     setClub(id);
     setFilter(getClubById(id));
+    toggleDropdown(false);
   };
 
   const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFilter(event.target.value);
   };
 
-  const toggleDropdown = () => {
+  const toggleDropdown = (state: boolean) => {
     setTimeout(() => {
-      setOpen(!open);
+      setOpen(state);
     }, 1);
+  };
+
+  const onReset = () => {
+    setFilter("");
+    toggleDropdown(true);
   };
 
   useEffect(() => {
@@ -44,8 +51,8 @@ const Club = () => {
       <input
         value={filter}
         onChange={onInputChange}
-        onFocus={toggleDropdown}
-        onBlur={toggleDropdown}
+        onFocus={() => toggleDropdown(true)}
+        onBlur={() => toggleDropdown(false)}
         className="px-2 py-1 rounded-md bg-white relative"
         ref={inputRef}
       />
@@ -77,6 +84,22 @@ const Club = () => {
           )}
         </div>
       )}
+      <button
+        onClick={onReset}
+        className="absolute"
+        style={{
+          top:
+            (inputRef.current?.offsetTop ?? 0) +
+            (inputRef.current?.offsetHeight ?? 0) / 2 -
+            8,
+          left:
+            (inputRef.current?.offsetLeft ?? 0) +
+            (inputRef.current?.offsetWidth ?? 0) -
+            20,
+        }}
+      >
+        <MdClose size="16" />
+      </button>
     </>
   );
 };

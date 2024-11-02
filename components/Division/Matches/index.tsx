@@ -131,9 +131,11 @@ const Matches = ({ matches, team, header }: Props) => {
                   </a>
                 </TableCell>
                 <TableCell>
-                  <a href={match.matchHallOnlineScoringUrl} target="_blank">
-                    Scoring
-                  </a>
+                  {match.matchHallOnlineScoringUrl && (
+                    <a href={match.matchHallOnlineScoringUrl} target="_blank">
+                      Scoring
+                    </a>
+                  )}
                 </TableCell>
               </tr>
             ))}
