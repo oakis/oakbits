@@ -32,6 +32,8 @@ jobs:
           context: .
           push: true
           tags: oakis/nextjs-app:latest
+          build-args: |
+            APIKEY=${{ secrets.APIKEY }}
 
       - name: Create SSH Key
         run: |
