@@ -1,7 +1,7 @@
-import { IClub } from "@/pages/api/clubs";
-import { IDivision } from "@/pages/api/division";
-import { ISeason } from "@/pages/api/seasons";
-import { ITeam } from "@/pages/api/team";
+import { IClub } from "@/pages/api/clubs.api";
+import { IDivision } from "@/pages/api/division.api";
+import { ISeason } from "@/pages/api/seasons.api";
+import { ITeam } from "@/pages/api/team.api";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
 import {
