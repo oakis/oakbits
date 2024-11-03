@@ -32,9 +32,11 @@ jobs:
           push: true
           tags: oakis/nextjs-app:latest
 
+      - name: Create SSH Directory
+        run: mkdir -p ~/.ssh
+
       - name: Save SSH Key
         run: |
-          mkdir -p ~/.ssh
           echo "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
