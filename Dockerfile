@@ -1,21 +1,27 @@
-# Use the official Next.js image
+# Use the official Node.js image as the base
 FROM node:20
 
-# Set working directory
+# Set the working directory
 WORKDIR /app
 
-# Copy package.json and install dependencies
+# Copy package.json and package-lock.json
 COPY package*.json ./
+
+# Install dependencies
 RUN npm install
 
-# Copy the project files
+# Copy the rest of your application code
 COPY . .
 
-# Build the Next.js app
+# Set environment variable from build arguments
+ARG APIKEY
+ENV APIKEY=$APIKEY
+
+# Build the Next.js application
 RUN npm run build
 
-# Expose port 3000
+# Expose the port your app runs on
 EXPOSE 3000
 
-# Start the app
+# Start the application
 CMD ["npm", "start"]
