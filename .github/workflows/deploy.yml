@@ -38,7 +38,6 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
-          strip: true
           script: |
             docker pull oakis/nextjs-app:latest
             docker stop nextjs-app || true
