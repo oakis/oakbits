@@ -1,8 +1,5 @@
 name: Deploy to Ubuntu Server
 
-env:
-  ACTIONS_STEP_DEBUG: true
-
 on:
   push:
     branches:
@@ -12,6 +9,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: Actions
+    env:
+      ACTIONS_STEP_DEBUG: true
 
     steps:
       - name: Check out the code
@@ -39,6 +38,7 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
+          strip: true
           script: |
             docker pull oakis/nextjs-app:latest
             docker stop nextjs-app || true
