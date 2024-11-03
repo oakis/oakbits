@@ -19,12 +19,16 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ISeason[]>
 ) {
+  console.log("APIKEY:", process.env.APIKEY);
+
   const data: SeasonData[] = await fetch(
     `https://api.swebowl.se/api/v1/Season?&APIKey=${process.env.APIKEY}`,
     {
       referrer: "https://bits.swebowl.se",
     }
-  ).then((data) => data.json());
+  )
+    .then((data) => data.json())
+    .catch((error) => console.log({ error }));
 
   const seasons: ISeason[] = data.map((season) => ({
     id: season.seasonId,
