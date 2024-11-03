@@ -1,4 +1,3 @@
-import { Match } from "@/types";
 import Table, {
   TableBody,
   TableCell,
@@ -10,6 +9,7 @@ import clsx from "clsx";
 import { getTeamUrl, isSelectedTeam } from "@/utils";
 import Link from "next/link";
 import HeaderText from "@/components/HeaderText";
+import { Match } from "@/pages/division/[year]/[club]/[team]/[division]/config";
 
 interface Props {
   matches: Match[][];

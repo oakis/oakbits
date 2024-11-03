@@ -5,12 +5,12 @@ import Table, {
   TableHeadCell,
   TableHeader,
 } from "@/components/Table";
-import { Standing } from "@/types";
 import clsx from "clsx";
 import { MdOutlineArrowDropDown, MdOutlineArrowDropUp } from "react-icons/md";
 import { getTeamUrl, isSelectedTeam } from "@/utils";
 import HeaderText from "@/components/HeaderText";
 import ClubLogo from "@/components/ClubLogo";
+import { Standing } from "@/pages/division/[year]/[club]/[team]/[division]/config";
 
 interface Props {
   standings: Standing[];

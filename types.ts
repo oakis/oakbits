@@ -1,4 +1,4 @@
-export interface Match {
+export interface MatchData {
   matchRoundId: number;
   matchDate: string;
   matchTime: number;
@@ -74,7 +74,7 @@ export interface Match {
 
 export type Divider = "S" | null;
 
-export interface Standing {
+export interface StandingData {
   standingsTeamId: number;
   standingsTeamName: string;
   standingsMatches: number;
