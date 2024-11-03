@@ -1,5 +1,8 @@
 name: Deploy to Ubuntu Server
 
+env:
+  ACTIONS_STEP_DEBUG: true
+
 on:
   push:
     branches:
@@ -9,8 +12,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: Actions
-    env:
-      ACTIONS_STEP_DEBUG: true
 
     steps:
       - name: Check out the code
@@ -32,13 +33,14 @@ jobs:
           push: true
           tags: oakis/nextjs-app:latest
 
-      - name: Create SSH Directory
-        run: mkdir -p ~/.ssh
-
-      - name: Save SSH Key
+      - name: Create SSH Key
         run: |
+          mkdir -p ~/.ssh
           echo "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+
+      - name: List SSH Directory
+        run: ls -la ~/.ssh
 
       - name: SSH and Deploy
         uses: appleboy/ssh-action@v1.1.0
