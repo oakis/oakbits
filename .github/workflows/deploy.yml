@@ -33,7 +33,7 @@ jobs:
           tags: oakis/nextjs-app:latest
 
       - name: SSH and Deploy
-        uses: appleboy/ssh-action@v0.1.6
+        uses: appleboy/ssh-action@v1.1.0
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
