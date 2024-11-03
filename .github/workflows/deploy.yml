@@ -3,7 +3,7 @@ name: Deploy to Ubuntu Server
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   deploy:
@@ -27,7 +27,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: your_dockerhub_username/nextjs-app:latest
+          tags: oakis/nextjs-app:latest
 
       - name: SSH and Deploy
         uses: appleboy/ssh-action@v0.1.5
@@ -36,7 +36,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            docker pull your_dockerhub_username/nextjs-app:latest
+            docker pull oakis/nextjs-app:latest
             docker stop nextjs-app || true
             docker rm nextjs-app || true
-            docker run -d -p 80:3000 --name nextjs-app your_dockerhub_username/nextjs-app:latest
+            docker run -d -p 80:3000 --name nextjs-app oakis/nextjs-app:latest
