@@ -41,9 +41,6 @@ jobs:
           echo "${{ secrets.SERVER_SSH_KEY }}" > /home/runner/.ssh/id_rsa
           chmod 600 /home/runner/.ssh/id_rsa
 
-      - name: List SSH Directory
-        run: ls -la /home/runner/.ssh
-
       - name: SSH and Deploy
         uses: appleboy/ssh-action@v1.1.0
         with:
