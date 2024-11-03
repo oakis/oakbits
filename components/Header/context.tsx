@@ -68,28 +68,32 @@ export const HeaderContextProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   useEffect(() => {
-    fetch(`/api/team?club=${club}&year=${season}`)
-      .then((data) => data.json())
-      .then((incomingTeams: ITeam[]) => {
-        setTeams(incomingTeams);
-        if (club !== "" && club !== clubParam && incomingTeams.length > 0) {
-          setTeam(incomingTeams[0].id.toString());
-        }
-      });
+    if (club && season) {
+      fetch(`/api/team?club=${club}&year=${season}`)
+        .then((data) => data.json())
+        .then((incomingTeams: ITeam[]) => {
+          setTeams(incomingTeams);
+          if (club !== clubParam && incomingTeams.length > 0) {
+            setTeam(incomingTeams[0].id.toString());
+          }
+        });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [club, season]);
 
   useEffect(() => {
-    fetch(`/api/division?team=${team}&year=${season}`)
-      .then((data) => data.json())
-      .then((incomingDivs: IDivision[]) => {
-        setDivisions(incomingDivs);
-        if (incomingDivs.length > 0 && season && club && team) {
-          router.push(
-            `/division/${season}/${club}/${team}/${incomingDivs[0].id}`
-          );
-        }
-      });
+    if (season && club && team) {
+      fetch(`/api/division?team=${team}&year=${season}`)
+        .then((data) => data.json())
+        .then((incomingDivs: IDivision[]) => {
+          setDivisions(incomingDivs);
+          if (incomingDivs.length > 0) {
+            router.push(
+              `/division/${season}/${club}/${team}/${incomingDivs[0].id}`
+            );
+          }
+        });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [team, season]);
 

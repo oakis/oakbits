@@ -28,7 +28,7 @@ const Club = () => {
   const toggleDropdown = (state: boolean) => {
     setTimeout(() => {
       setOpen(state);
-    }, 1);
+    }, 0);
   };
 
   const onReset = () => {
@@ -52,36 +52,40 @@ const Club = () => {
         value={filter}
         onChange={onInputChange}
         onFocus={() => toggleDropdown(true)}
-        onBlur={() => toggleDropdown(false)}
         className="px-2 py-1 rounded-md bg-white relative"
         ref={inputRef}
       />
       {open && (
         <div
-          className="absolute bg-white z-10 overflow-scroll rounded-md shadow-md p-3 shadow-slate-500 flex flex-col justify-start gap-1"
-          style={{
-            top:
-              (inputRef.current?.offsetTop ?? 0) +
-              (inputRef.current?.offsetHeight ?? 0) +
-              1,
-            left: inputRef.current?.offsetLeft,
-            maxHeight: "90%",
-          }}
+          className="absolute w-full h-full top-0 left-0 z-10"
+          onClick={() => toggleDropdown(false)}
         >
-          {filteredClubs.length > 0 ? (
-            filteredClubs.map((s) => (
-              <button
-                key={s.id}
-                value={s.id}
-                onClick={() => onSelect(s.id)}
-                className="text-left"
-              >
-                {s.name}
-              </button>
-            ))
-          ) : (
-            <div>Hittade ingen klubb med det namnet.</div>
-          )}
+          <div
+            className="absolute bg-white z-20 overflow-scroll rounded-md shadow-md p-3 shadow-slate-500 flex flex-col justify-start gap-1"
+            style={{
+              top:
+                (inputRef.current?.offsetTop ?? 0) +
+                (inputRef.current?.offsetHeight ?? 0) +
+                1,
+              left: inputRef.current?.offsetLeft,
+              maxHeight: "90%",
+            }}
+          >
+            {filteredClubs.length > 0 ? (
+              filteredClubs.map((s) => (
+                <button
+                  key={s.id}
+                  value={s.id}
+                  onClick={() => onSelect(s.id)}
+                  className="text-left"
+                >
+                  {s.name}
+                </button>
+              ))
+            ) : (
+              <div>Hittade ingen klubb med det namnet.</div>
+            )}
+          </div>
         </div>
       )}
       <button
