@@ -32,12 +32,18 @@ jobs:
           push: true
           tags: oakis/nextjs-app:latest
 
+      - name: Save SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
       - name: SSH and Deploy
         uses: appleboy/ssh-action@v1.1.0
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
+          key_path: ~/.ssh/id_rsa
           script: |
             docker pull oakis/nextjs-app:latest
             docker stop nextjs-app || true
