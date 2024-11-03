@@ -3,7 +3,7 @@ const nextConfig = {
   images: {
     remotePatterns: [{ hostname: "bits.swebowl.se" }],
   },
-  pageExtensions: ['tsx'],
+  pageExtensions: ["page.tsx", "api.ts"],
 };
 
 export default nextConfig;
