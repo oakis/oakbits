@@ -14,7 +14,7 @@ interface Props {
 
 const Stats = ({ stats, teamName }: Props) => {
   return (
-    <Table>
+    <Table autoHeight>
       <TableHead>
         <TableRow index={0}>
           <TableHeadCell classes="!text-left">{teamName}</TableHeadCell>

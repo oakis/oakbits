@@ -1,9 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useHeaderContext } from "../context";
 import { MdClose } from "react-icons/md";
+import clsx from "clsx";
+import useIsMobile from "@/hooks/useIsMobile";
 
 const Club = () => {
   const { club, clubs, setClub } = useHeaderContext();
+  const isMobile = useIsMobile();
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -47,13 +50,15 @@ const Club = () => {
   );
 
   return (
-    <>
+    <div className={clsx("relative", isMobile && "w-full px-4")} ref={inputRef}>
       <input
         value={filter}
         onChange={onInputChange}
         onFocus={() => toggleDropdown(true)}
-        className="px-2 py-1 rounded-md bg-white relative"
-        ref={inputRef}
+        className={clsx(
+          "px-2 py-1 rounded-md bg-white relative",
+          isMobile && "w-full"
+        )}
       />
       {open && (
         <div
@@ -61,14 +66,14 @@ const Club = () => {
           onClick={() => toggleDropdown(false)}
         >
           <div
-            className="absolute bg-white z-20 overflow-scroll rounded-md shadow-md p-3 shadow-slate-500 flex flex-col justify-start gap-1"
+            className="fixed bg-white z-20 overflow-scroll rounded-md shadow-md p-3 shadow-slate-500 flex flex-col justify-start gap-1"
             style={{
               top:
                 (inputRef.current?.offsetTop ?? 0) +
                 (inputRef.current?.offsetHeight ?? 0) +
                 1,
-              left: inputRef.current?.offsetLeft,
-              maxHeight: "90%",
+              left: isMobile ? 16 : inputRef.current?.offsetLeft,
+              maxHeight: "calc(100vh - 160px)",
             }}
           >
             {filteredClubs.length > 0 ? (
@@ -92,19 +97,13 @@ const Club = () => {
         onClick={onReset}
         className="absolute"
         style={{
-          top:
-            (inputRef.current?.offsetTop ?? 0) +
-            (inputRef.current?.offsetHeight ?? 0) / 2 -
-            8,
-          left:
-            (inputRef.current?.offsetLeft ?? 0) +
-            (inputRef.current?.offsetWidth ?? 0) -
-            20,
+          top: 8,
+          right: isMobile ? 16 : 8
         }}
       >
         <MdClose size="16" />
       </button>
-    </>
+    </div>
   );
 };
 

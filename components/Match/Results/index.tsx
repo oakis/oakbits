@@ -20,7 +20,7 @@ const Results = ({ gameInfo, gameStats }: Props) => {
         {gameInfo.matchDayFormatted} {gameInfo.matchTimeFormatted}
       </span>
       <span className="text-4xl font-bold">{gameInfo.matchResult}</span>
-      <Table>
+      <Table autoHeight>
         <TableHead>
           <tr>
             <TableHeadCell>BanP</TableHeadCell>
