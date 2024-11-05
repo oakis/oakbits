@@ -51,4 +51,4 @@ jobs:
             docker pull oakis/nextjs-app:latest
             docker stop nextjs-app || true
             docker rm nextjs-app || true
-            docker run -d -p 80:3000 --name nextjs-app oakis/nextjs-app:latest
+            docker run -d -p 3000:3000 --name nextjs-app oakis/nextjs-app:latest
