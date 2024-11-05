@@ -45,7 +45,7 @@ const Standings = ({ standings, team, season, divisionName }: Props) => {
       <HeaderText>
         {divisionName} {season}
       </HeaderText>
-      <Table>
+      <Table autoHeight>
         <TableHead>
           <TableHeader>
             <TableHeadCell classes="!text-left">Lag</TableHeadCell>
