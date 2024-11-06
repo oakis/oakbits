@@ -59,6 +59,7 @@ const Club = () => {
           "px-2 py-1 rounded-md bg-white relative",
           isMobile && "w-full"
         )}
+        placeholder="Sök på klubb.."
       />
       {open && (
         <div
