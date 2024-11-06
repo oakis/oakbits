@@ -109,10 +109,12 @@ export default function Page({
       </div>
       <Boards scores={scores} />
       <Stats
+        homeOrAway="home"
         stats={playerStats.playerListHome}
         teamName={gameInfo.matchHomeTeamName}
       />
       <Stats
+        homeOrAway="away"
         stats={playerStats.playerListAway}
         teamName={gameInfo.matchAwayTeamName}
       />

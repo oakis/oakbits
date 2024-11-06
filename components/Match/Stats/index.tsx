@@ -10,13 +10,17 @@ import { Player } from "@/pages/match/[id]/config";
 interface Props {
   stats: Player[];
   teamName: string;
+  homeOrAway: "home" | "away";
 }
 
-const Stats = ({ stats, teamName }: Props) => {
+const Stats = ({ stats, teamName, homeOrAway }: Props) => {
   return (
     <Table autoHeight>
       <TableHead>
-        <TableRow index={0}>
+        <TableRow
+          index={0}
+          color={homeOrAway === "home" ? "bg-red-50" : "bg-sky-50"}
+        >
           <TableHeadCell classes="!text-left">{teamName}</TableHeadCell>
           <TableHeadCell classes="!text-left" colSpan={7}>
             Serier
@@ -44,7 +48,12 @@ const Stats = ({ stats, teamName }: Props) => {
       </TableHead>
       <TableBody>
         {stats.map((row, i) => (
-          <TableRow key={row.licNbr} index={i}>
+          <TableRow
+            key={row.licNbr}
+            index={i}
+            color={homeOrAway === "home" ? "bg-red-50" : "bg-sky-50"}
+            classes="text-sm sm:text-base"
+          >
             <TableCell classes="!text-left">
               {row.player.split("(")[0]}
               <br />({row.player.split("(")[1].replace(")", "")})
