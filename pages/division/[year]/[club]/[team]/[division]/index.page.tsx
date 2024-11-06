@@ -101,6 +101,7 @@ export default function Page({
     <>
       <Header />
       <Main>
+        <div style={{ marginTop: "-5rem" }} />
         {played.length > 0 && (
           <Matches matches={[played]} team={team} header="Aktuella matcher" />
         )}

@@ -7,7 +7,7 @@ interface Props extends PropsWithChildren {
 }
 
 const TableHeadCell = ({ children, classes, colSpan }: Props) => (
-  <th colSpan={colSpan} className={clsx("p-4 text-center", classes)}>
+  <th colSpan={colSpan} className={clsx("p-2 sm:p-4 text-center", classes)}>
     {children}
   </th>
 );

@@ -59,6 +59,7 @@ const Club = () => {
           "px-2 py-1 rounded-md bg-white relative",
           isMobile && "w-full"
         )}
+        placeholder="Sök på klubb.."
       />
       {open && (
         <div
@@ -99,7 +100,7 @@ const Club = () => {
         className="absolute"
         style={{
           top: 8,
-          right: isMobile ? 16 : 8,
+          right: isMobile ? 17 : 8,
         }}
       >
         <MdClose size="16" />

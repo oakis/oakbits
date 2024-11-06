@@ -10,7 +10,7 @@ export default function Header() {
         <div className="container mx-auto flex items-center gap-4 h-full flex-col sm:flex-row justify-center sm:justify-start">
           <Season />
           <Club />
-          <Team /> 
+          <Team />
         </div>
       </div>
     </HeaderContextProvider>
