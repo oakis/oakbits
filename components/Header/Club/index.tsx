@@ -62,11 +62,11 @@ const Club = () => {
       />
       {open && (
         <div
-          className="absolute w-full h-full top-0 left-0 z-10"
+          className="fixed w-full h-full top-0 left-0 z-10"
           onClick={() => toggleDropdown(false)}
         >
           <div
-            className="fixed bg-white z-20 overflow-scroll rounded-md shadow-md p-3 shadow-slate-500 flex flex-col justify-start gap-1"
+            className="absolute bg-white z-20 overflow-auto rounded-md shadow-md p-3 shadow-slate-500 flex flex-col justify-start gap-1"
             style={{
               top:
                 (inputRef.current?.offsetTop ?? 0) +
@@ -74,6 +74,7 @@ const Club = () => {
                 1,
               left: isMobile ? 16 : inputRef.current?.offsetLeft,
               maxHeight: "calc(100vh - 160px)",
+              minWidth: inputRef.current?.children[0].scrollWidth,
             }}
           >
             {filteredClubs.length > 0 ? (
@@ -98,7 +99,7 @@ const Club = () => {
         className="absolute"
         style={{
           top: 8,
-          right: isMobile ? 16 : 8
+          right: isMobile ? 16 : 8,
         }}
       >
         <MdClose size="16" />
