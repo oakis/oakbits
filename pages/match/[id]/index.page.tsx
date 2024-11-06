@@ -96,7 +96,7 @@ export default function Page({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <Main>
-      <div className="flex w-full sm:justify-between justify-center gap-4 mt-10">
+      <div className="flex w-full sm:justify-between justify-center gap-4 overflow-hidden">
         <Team
           teamName={gameInfo.matchHomeTeamName}
           clubId={gameInfo.matchHomeClubId}

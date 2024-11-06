@@ -20,7 +20,7 @@ const Table = ({
   autoHeight = false,
 }: Props) => (
   <div
-    className={clsx("block overflow-auto whitespace-nowrap", wrapperClasses)}
+    className={clsx("block overflow-auto w-full", wrapperClasses)}
     style={autoHeight ? {} : { maxHeight: "calc(100vh - 76px)" }}
   >
     <table className={clsx("table-auto w-full relative", classes)}>

@@ -99,7 +99,7 @@ const Club = () => {
         className="absolute"
         style={{
           top: 8,
-          right: isMobile ? 16 : 8,
+          right: isMobile ? 17 : 8,
         }}
       >
         <MdClose size="16" />

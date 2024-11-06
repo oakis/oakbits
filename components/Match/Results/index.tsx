@@ -15,7 +15,7 @@ interface Props {
 
 const Results = ({ gameInfo, gameStats }: Props) => {
   return (
-    <div className="flex flex-col gap-2 items-center">
+    <div className="flex flex-col gap-2 items-center w-full sm:w-3/6 px-4">
       <span className="text-1xl uppercase">
         {gameInfo.matchDayFormatted} {gameInfo.matchTimeFormatted}
       </span>

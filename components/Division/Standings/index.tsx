@@ -80,11 +80,11 @@ const Standings = ({ standings, team, season, divisionName }: Props) => {
                       name={standing.standingsTeamName}
                     />
                     <a
-                      className={
-                        isSelectedTeam(standing.standingsTeamId, team)
-                          ? "font-bold"
-                          : ""
-                      }
+                      className={clsx(
+                        "overflow-hidden text-ellipsis",
+                        isSelectedTeam(standing.standingsTeamId, team) &&
+                          "font-bold"
+                      )}
                       href={getTeamUrl(
                         season,
                         standing.clubTeamClubId,
