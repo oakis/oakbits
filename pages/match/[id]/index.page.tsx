@@ -50,6 +50,7 @@ export const getServerSideProps = (async (context) => {
   ).then((data) => data.json());
 
   const createDynamicGroups = (dataArray: Series[]): Series[] => {
+    if (dataArray.length === 0 || dataArray[0].boards.length === 0) return [];
     const mappedData = dataArray.map((serie) => {
       const numOfPlayers = serie.boards[0].scores.length;
 
@@ -107,17 +108,21 @@ export default function Page({
           clubId={gameInfo.matchAwayClubId}
         />
       </div>
-      <Boards scores={scores} />
-      <Stats
-        homeOrAway="home"
-        stats={playerStats.playerListHome}
-        teamName={gameInfo.matchHomeTeamName}
-      />
-      <Stats
-        homeOrAway="away"
-        stats={playerStats.playerListAway}
-        teamName={gameInfo.matchAwayTeamName}
-      />
+      {gameStats.length !== 0 && (
+        <>
+          <Boards scores={scores} />
+          <Stats
+            homeOrAway="home"
+            stats={playerStats.playerListHome}
+            teamName={gameInfo.matchHomeTeamName}
+          />
+          <Stats
+            homeOrAway="away"
+            stats={playerStats.playerListAway}
+            teamName={gameInfo.matchAwayTeamName}
+          />
+        </>
+      )}
     </Main>
   );
 }
