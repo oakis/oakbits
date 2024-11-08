@@ -113,11 +113,16 @@ const Matches = ({ matches, team, header }: Props) => {
                   <span className="flex-1 items-center flex flex-col justify-center text-sm">
                     <div className="relative h-9 w-9">
                       <ClubLogo
-                        type="layout"
                         id={match.homeTeamClubId}
                         name={match.matchHomeTeamName}
-                        layout="fill"
-                        objectFit="contain"
+                        imageProps={{
+                          fill: true,
+                          sizes: "36px",
+                          style: {
+                            objectFit: "contain",
+                            objectPosition: "center center",
+                          },
+                        }}
                       />
                     </div>
                     {renderHomeTeam(match)}
@@ -137,11 +142,16 @@ const Matches = ({ matches, team, header }: Props) => {
                   <span className="flex-1 items-center flex flex-col justify-center text-sm">
                     <div className="relative h-9 w-9">
                       <ClubLogo
-                        type="layout"
                         id={match.awayTeamClubId}
                         name={match.matchAwayTeamName}
-                        layout="fill"
-                        objectFit="contain"
+                        imageProps={{
+                          fill: true,
+                          sizes: "36px",
+                          style: {
+                            objectFit: "contain",
+                            objectPosition: "center center",
+                          },
+                        }}
                       />
                     </div>
                     {renderAwayTeam(match)}

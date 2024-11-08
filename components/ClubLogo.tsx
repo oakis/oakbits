@@ -1,55 +1,26 @@
-import Image from "next/image";
+import Image, { ImageProps } from "next/image";
 import { useState } from "react";
 
-type Props =
-  | {
-      type: "fixed";
-      id: string | number;
-      name: string;
-      width: number;
-      height: number;
-    }
-  | {
-      type: "layout";
-      id: string | number;
-      name: string;
-      layout: string;
-      objectFit: string;
-    };
+interface Props {
+  id: string | number;
+  name: string;
+  imageProps?: Partial<ImageProps>;
+}
 
 const ClubLogo = (props: Props) => {
   const [error, setError] = useState(false);
   const url = `https://bits.swebowl.se/images/ClubLogo/${props.id}.png`;
 
-  const getImageByType = () => {
-    switch (props.type) {
-      case "fixed":
-        return (
-          <Image
-            src={url}
-            alt={`Klubbmärke ${props.name}`}
-            width={props.width}
-            height={props.height}
-            onError={() => setError(true)}
-          />
-        );
-      case "layout":
-        return (
-          <Image
-            src={url}
-            alt={`Klubbmärke ${props.name}`}
-            layout={props.layout}
-            objectFit={props.objectFit}
-            onError={() => setError(true)}
-          />
-        );
-
-      default:
-        return <span className="w-8 h-8" />;
-    }
-  };
-
-  return error ? <span className="w-8 h-8" /> : getImageByType();
+  return error ? (
+    <span className="w-8 h-8" />
+  ) : (
+    <Image
+      {...props.imageProps}
+      src={url}
+      alt={`Klubbmärke ${props.name}`}
+      onError={() => setError(true)}
+    />
+  );
 };
 
 export default ClubLogo;
