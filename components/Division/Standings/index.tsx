@@ -65,6 +65,7 @@ const Standings = ({ standings, team, season, divisionName }: Props) => {
               className={clsx(
                 "border",
                 i % 2 === 0 && "bg-slate-100",
+                i % 2 !== 0 && "bg-white",
                 standing.standingsDividerType === "S" &&
                   "border-b-slate-800 border-b-2"
               )}
