@@ -96,7 +96,7 @@ const Matches = ({ matches, team, header }: Props) => {
               <div
                 key={match.matchId}
                 className={clsx(
-                  "flex flex-col items-center w-11/12 p-2 bg-slate-100 shadow-md border-slate-200 rounded-lg gap-y-1",
+                  "flex flex-col items-center w-11/12 p-2 bg-white shadow-md border-slate-200 rounded-lg gap-y-1",
                   (isSelectedTeam(match.matchAwayTeamId, team) ||
                     isSelectedTeam(match.matchHomeTeamId, team)) &&
                     "border-slate-400"
