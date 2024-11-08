@@ -45,7 +45,17 @@ const Standings = ({ standings, team, season, divisionName }: Props) => {
       <HeaderText>
         {divisionName} {season}
       </HeaderText>
-      <Table autoHeight>
+      <Table autoHeight classes="table-fixed">
+        <colgroup>
+          <col className="w-56" />
+          <col className="w-8" />
+          <col className="w-8" />
+          <col className="w-8" />
+          <col className="w-8" />
+          <col className="w-16" />
+          <col className="w-12" />
+          <col className="w-10" />
+        </colgroup>
         <TableHead>
           <TableHeader>
             <TableHeadCell classes="!text-left">Lag</TableHeadCell>
@@ -89,7 +99,7 @@ const Standings = ({ standings, team, season, divisionName }: Props) => {
                     </span>
                     <a
                       className={clsx(
-                        "overflow-hidden text-ellipsis",
+                        "overflow-hidden text-ellipsis whitespace-nowrap max-w-32 sm:max-w-52 md:max-w-64",
                         isSelectedTeam(standing.standingsTeamId, team) &&
                           "font-bold"
                       )}
