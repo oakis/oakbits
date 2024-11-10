@@ -1,11 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useHeaderContext } from "../context";
-import { MdClose } from "react-icons/md";
-import { FaChevronDown, FaCross } from "react-icons/fa";
+import { FaChevronDown } from "react-icons/fa";
+import { FaX } from "react-icons/fa6";
 import clsx from "clsx";
 import useIsMobile from "@/hooks/useIsMobile";
-import { FaX } from "react-icons/fa6";
-import { GrClose } from "react-icons/gr";
 
 const Club = () => {
   const { club, clubs, setClub } = useHeaderContext();
