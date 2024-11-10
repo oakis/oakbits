@@ -1,6 +1,7 @@
 import useIsMobile from "@/hooks/useIsMobile";
 import clsx from "clsx";
 import { SelectHTMLAttributes } from "react";
+import { FaChevronDown } from "react-icons/fa";
 
 interface Item {
   name: string;
@@ -14,12 +15,18 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 const Select = ({ onChange, value, items }: SelectProps) => {
   const isMobile = useIsMobile();
 
+  const getIconXPos = (): number => {
+    return isMobile ? 22 : 8;
+  };
+
   return (
-    <div className={clsx(isMobile && "w-full px-4")}>
+    <div
+      className={clsx("relative", isMobile && "w-full px-4")}
+    >
       <select
         value={value}
         onChange={onChange}
-        className={clsx("px-2 py-1 rounded-md", isMobile && "w-full")}
+        className={clsx("px-2 py-1 pr-8 rounded-md appearance-none", isMobile && "w-full")}
       >
         {items.map((s) => (
           <option key={s.id} value={s.id}>
@@ -27,6 +34,15 @@ const Select = ({ onChange, value, items }: SelectProps) => {
           </option>
         ))}
       </select>
+      <span
+        className="absolute h-8 flex items-center"
+        style={{
+          top: 0,
+          right: getIconXPos(),
+        }}
+      >
+        <FaChevronDown size="16" />
+      </span>
     </div>
   );
 };
