@@ -1,8 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useHeaderContext } from "../context";
 import { MdClose } from "react-icons/md";
+import { FaChevronDown, FaCross } from "react-icons/fa";
 import clsx from "clsx";
 import useIsMobile from "@/hooks/useIsMobile";
+import { FaX } from "react-icons/fa6";
+import { GrClose } from "react-icons/gr";
 
 const Club = () => {
   const { club, clubs, setClub } = useHeaderContext();
@@ -12,6 +15,8 @@ const Club = () => {
 
   const [filter, setFilter] = useState("");
   const [open, setOpen] = useState(false);
+
+  const isDirty = filter !== "";
 
   const getClubById = useCallback(
     (id: string) => clubs.find((c) => id === c.id)?.name ?? "",
@@ -49,6 +54,13 @@ const Club = () => {
     f.name.toLowerCase().includes(filter.toLowerCase())
   );
 
+  const getIconXPos = (): number => {
+    if (isDirty) {
+      return isMobile ? 24 : 8;
+    }
+    return isMobile ? 22 : 8;
+  };
+
   return (
     <div className={clsx("relative", isMobile && "w-full px-4")} ref={inputRef}>
       <input
@@ -56,7 +68,7 @@ const Club = () => {
         onChange={onInputChange}
         onFocus={() => toggleDropdown(true)}
         className={clsx(
-          "pl-3 px-2 py-1 rounded-md bg-white relative",
+          "px-2 py-1 pr-8 rounded-md bg-white relative",
           isMobile && "w-full"
         )}
         placeholder="Sök på klubb.."
@@ -97,13 +109,17 @@ const Club = () => {
       )}
       <button
         onClick={onReset}
-        className="absolute"
+        className="absolute h-8"
         style={{
-          top: 8,
-          right: isMobile ? 17 : 8,
+          top: 0,
+          right: getIconXPos(),
         }}
       >
-        <MdClose size="16" />
+        {isDirty ? (
+          <FaX size="12" preserveAspectRatio="none" />
+        ) : (
+          <FaChevronDown size="16" />
+        )}
       </button>
     </div>
   );
