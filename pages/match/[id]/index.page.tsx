@@ -15,6 +15,7 @@ import Results from "@/components/Match/Results";
 import Team from "@/components/Match/Team";
 import Stats from "@/components/Match/Stats";
 import Boards from "@/components/Match/Boards";
+import useIsMobile from "@/hooks/useIsMobile";
 
 export const getServerSideProps = (async (context) => {
   const { id } = context.params!;
@@ -95,19 +96,42 @@ export default function Page({
   playerStats,
   scores,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const isMobile = useIsMobile();
+  console.log({ isMobile });
   return (
     <Main>
-      <div className="flex w-full sm:justify-between justify-center gap-4 overflow-hidden">
-        <Team
-          teamName={gameInfo.matchHomeTeamName}
-          clubId={gameInfo.matchHomeClubId}
-        />
-        <Results gameInfo={gameInfo} gameStats={gameStats} />
-        <Team
-          teamName={gameInfo.matchAwayTeamName}
-          clubId={gameInfo.matchAwayClubId}
-        />
-      </div>
+      {isMobile ? (
+        <div className="flex flex-row w-full justify-around gap-4">
+          <div className="flex flex-col gap-2 items-center w-full sm:w-3/6 px-4">
+            <span className="text-1xl uppercase">
+              {gameInfo.matchDayFormatted} {gameInfo.matchTimeFormatted}
+            </span>
+            <h2 className="text-xl text-center">
+              {gameInfo.matchHomeTeamName} - {gameInfo.matchAwayTeamName}
+            </h2>
+            <span className="text-4xl font-bold">{gameInfo.matchResult}</span>
+            <Results gameInfo={gameInfo} gameStats={gameStats} />
+          </div>
+        </div>
+      ) : (
+        <div className="flex w-full">
+          <Team
+            teamName={gameInfo.matchHomeTeamName}
+            clubId={gameInfo.matchHomeClubId}
+          />
+          <div className="flex flex-col items-center">
+            <span className="text-1xl uppercase">
+              {gameInfo.matchDayFormatted} {gameInfo.matchTimeFormatted}
+            </span>
+            <span className="text-4xl font-bold">{gameInfo.matchResult}</span>
+            <Results gameInfo={gameInfo} gameStats={gameStats} />
+          </div>
+          <Team
+            teamName={gameInfo.matchAwayTeamName}
+            clubId={gameInfo.matchAwayClubId}
+          />
+        </div>
+      )}
       {gameStats.length !== 0 && (
         <>
           <Boards scores={scores} />

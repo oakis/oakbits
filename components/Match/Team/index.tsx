@@ -7,21 +7,19 @@ interface Props {
 
 const MatchTeam = ({ teamName, clubId }: Props) => {
   return (
-    <div className="sm:flex hidden flex-col">
-      <div className="sm:flex flex-col items-center justify-center gap-3 w-48 relative flex-1">
-        <h2 className="text-2xl text-center h-16">{teamName}</h2>
-        <div className="relative w-36 h-36 flex items-center">
-          <ClubLogo
-            id={clubId}
-            name={teamName}
-            imageProps={{
-              priority: true,
-              fill: true,
-              sizes: "144px",
-              style: { objectFit: "contain", objectPosition: "top center" },
-            }}
-          />
-        </div>
+    <div className="flex flex-col flex-1 items-center justify-start gap-4 w-56 mt-6">
+      <h2 className="text-4xl font-bold text-center h-16">{teamName}</h2>
+      <div className="relative w-56 h-56 flex items-center">
+        <ClubLogo
+          id={clubId}
+          name={teamName}
+          imageProps={{
+            priority: true,
+            fill: true,
+            sizes: "224px",
+            style: { objectFit: "contain", objectPosition: "top center" },
+          }}
+        />
       </div>
     </div>
   );
