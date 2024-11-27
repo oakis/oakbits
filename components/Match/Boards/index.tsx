@@ -18,7 +18,7 @@ const Boards = ({ scores }: Props) => {
             >
               {rowI + 1}
             </div>
-            <div className="flex flex-row justify-around w-full gap-8">
+            <div className="flex flex-row justify-around w-full gap-4">
               {row.boards.map((board, boardI) => (
                 <Card
                   key={rowI + "row" + boardI}

@@ -15,99 +15,93 @@ interface Props {
 
 const Results = ({ gameInfo, gameStats }: Props) => {
   return (
-    <div className="flex flex-col gap-2 items-center w-full sm:w-3/6 px-4">
-      <span className="text-1xl uppercase">
-        {gameInfo.matchDayFormatted} {gameInfo.matchTimeFormatted}
-      </span>
-      <span className="text-4xl font-bold">{gameInfo.matchResult}</span>
-      {gameStats.length !== 0 && (
-        <Table autoHeight>
-          <TableHead>
-            <tr>
-              <TableHeadCell>BanP</TableHeadCell>
-              <TableHeadCell>KägelP</TableHeadCell>
-              <TableHeadCell>Serie</TableHeadCell>
-              <TableHeadCell>KägelP</TableHeadCell>
-              <TableHeadCell>BanP</TableHeadCell>
-            </tr>
-          </TableHead>
-          <TableBody>
-            {gameStats.map((row, i) => (
-              <TableRow
-                key={row.series}
-                index={i}
-                classes="rounded-3xl border-none"
-              >
-                <TableCell
-                  classes={clsx(
-                    row.homeRp >= row.awayRp && "font-bold",
-                    i === 0 && "rounded-tl-3xl"
-                  )}
-                >
-                  {row.homeRp}
-                </TableCell>
-                <TableCell
-                  classes={clsx(row.homeScore >= row.awayScore && "font-bold")}
-                >
-                  {row.homeScore}
-                </TableCell>
-                <TableCell classes="text-2xl">{row.series}</TableCell>
-                <TableCell
-                  classes={clsx(row.homeScore <= row.awayScore && "font-bold")}
-                >
-                  {row.awayScore}
-                </TableCell>
-                <TableCell
-                  classes={clsx(
-                    row.homeRp <= row.awayRp && "font-bold",
-                    i === 0 && "rounded-tr-3xl"
-                  )}
-                >
-                  {row.awayRp}
-                </TableCell>
-              </TableRow>
-            ))}
-            <TableRow index={0} classes="rounded-3xl border-none">
+    gameStats.length !== 0 && (
+      <Table autoHeight classes="max-w-md" wrapperClasses="w-auto">
+        <TableHead>
+          <tr>
+            <TableHeadCell>BanP</TableHeadCell>
+            <TableHeadCell>KägelP</TableHeadCell>
+            <TableHeadCell>Serie</TableHeadCell>
+            <TableHeadCell>KägelP</TableHeadCell>
+            <TableHeadCell>BanP</TableHeadCell>
+          </tr>
+        </TableHead>
+        <TableBody>
+          {gameStats.map((row, i) => (
+            <TableRow
+              key={row.series}
+              index={i}
+              classes="rounded-3xl border-none"
+            >
               <TableCell
                 classes={clsx(
-                  gameInfo.matchHomeTeamResult >=
-                    gameInfo.matchAwayTeamResult && "font-bold",
-                  "rounded-bl-3xl"
+                  row.homeRp >= row.awayRp && "font-bold",
+                  i === 0 && "rounded-tl-3xl"
                 )}
               >
-                {gameInfo.matchHomeTeamResult}
+                {row.homeRp}
+              </TableCell>
+              <TableCell
+                classes={clsx(row.homeScore >= row.awayScore && "font-bold")}
+              >
+                {row.homeScore}
+              </TableCell>
+              <TableCell classes="text-2xl">{row.series}</TableCell>
+              <TableCell
+                classes={clsx(row.homeScore <= row.awayScore && "font-bold")}
+              >
+                {row.awayScore}
               </TableCell>
               <TableCell
                 classes={clsx(
-                  gameInfo.matchHomeTeamScore >= gameInfo.matchAwayTeamScore &&
-                    "font-bold"
+                  row.homeRp <= row.awayRp && "font-bold",
+                  i === 0 && "rounded-tr-3xl"
                 )}
               >
-                {gameInfo.matchHomeTeamScore}
-              </TableCell>
-              <TableCell classes="text-2xl">Total</TableCell>
-              <TableCell
-                classes={clsx(
-                  gameInfo.matchHomeTeamScore <= gameInfo.matchAwayTeamScore &&
-                    "font-bold"
-                )}
-              >
-                {gameInfo.matchAwayTeamScore}
-              </TableCell>
-              <TableCell
-                classes={clsx(
-                  gameInfo.matchHomeTeamResult <=
-                    gameInfo.matchAwayTeamResult && "font-bold",
-                  "rounded-br-3xl"
-                )}
-              >
-                {gameInfo.matchAwayTeamResult}
+                {row.awayRp}
               </TableCell>
             </TableRow>
-          </TableBody>
-        </Table>
-      )}
-    </div>
+          ))}
+          <TableRow index={0} classes="rounded-3xl border-none">
+            <TableCell
+              classes={clsx(
+                gameInfo.matchHomeTeamResult >= gameInfo.matchAwayTeamResult &&
+                  "font-bold",
+                "rounded-bl-3xl"
+              )}
+            >
+              {gameInfo.matchHomeTeamResult}
+            </TableCell>
+            <TableCell
+              classes={clsx(
+                gameInfo.matchHomeTeamScore >= gameInfo.matchAwayTeamScore &&
+                  "font-bold"
+              )}
+            >
+              {gameInfo.matchHomeTeamScore}
+            </TableCell>
+            <TableCell classes="text-2xl">Total</TableCell>
+            <TableCell
+              classes={clsx(
+                gameInfo.matchHomeTeamScore <= gameInfo.matchAwayTeamScore &&
+                  "font-bold"
+              )}
+            >
+              {gameInfo.matchAwayTeamScore}
+            </TableCell>
+            <TableCell
+              classes={clsx(
+                gameInfo.matchHomeTeamResult <= gameInfo.matchAwayTeamResult &&
+                  "font-bold",
+                "rounded-br-3xl"
+              )}
+            >
+              {gameInfo.matchAwayTeamResult}
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    )
   );
 };
 

@@ -13,13 +13,21 @@ interface Props {
   homeOrAway: "home" | "away";
 }
 
+const primaryHomeColor = "bg-indigo-400";
+const secondaryHomeColor = "bg-indigo-100";
+
+const primaryAwayColor = "bg-slate-300";
+const secondaryAwayColor = "bg-slate-100";
+
 const Stats = ({ stats, teamName, homeOrAway }: Props) => {
   return (
     <Table autoHeight>
       <TableHead>
         <TableRow
           index={0}
-          color={homeOrAway === "home" ? "bg-red-50" : "bg-sky-50"}
+          primaryColor={
+            homeOrAway === "home" ? primaryHomeColor : primaryAwayColor
+          }
         >
           <TableHeadCell classes="!text-left">{teamName}</TableHeadCell>
           <TableHeadCell classes="!text-left" colSpan={7}>
@@ -51,7 +59,12 @@ const Stats = ({ stats, teamName, homeOrAway }: Props) => {
           <TableRow
             key={row.licNbr}
             index={i}
-            color={homeOrAway === "home" ? "bg-red-50" : "bg-sky-50"}
+            primaryColor={
+              homeOrAway === "home" ? primaryHomeColor : primaryAwayColor
+            }
+            secondaryColor={
+              homeOrAway === "home" ? secondaryHomeColor : secondaryAwayColor
+            }
             classes="text-sm sm:text-base"
           >
             <TableCell classes="!text-left">
