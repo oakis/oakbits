@@ -97,7 +97,6 @@ export default function Page({
   scores,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const isMobile = useIsMobile();
-  console.log({ isMobile });
   return (
     <Main>
       {isMobile ? (
