@@ -1,7 +1,7 @@
 name: Deploy to Ubuntu Server
 
 env:
-  ACTIONS_STEP_DEBUG: true
+  ACTIONS_STEP_DEBUG: false
 
 on:
   push:

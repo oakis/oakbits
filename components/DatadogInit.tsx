@@ -1,5 +1,7 @@
 import { datadogRum, DefaultPrivacyLevel } from "@datadog/browser-rum";
 
+console.log(process.env);
+
 if (process.env.NEXT_PUBLIC_ENV !== "local") {
   datadogRum.init({
     applicationId: process.env.NEXT_PUBLIC_DATADOG_APPID as string,
