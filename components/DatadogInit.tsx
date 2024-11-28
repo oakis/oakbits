@@ -2,8 +2,8 @@ import { datadogRum, DefaultPrivacyLevel } from "@datadog/browser-rum";
 
 if (process.env.NEXT_PUBLIC_ENV !== "local") {
   datadogRum.init({
-    applicationId: process.env.DATADOG_APPID as string,
-    clientToken: process.env.DATADOG_TOKEN as string,
+    applicationId: process.env.NEXT_PUBLIC_DATADOG_APPID as string,
+    clientToken: process.env.NEXT_PUBLIC_DATADOG_TOKEN as string,
     site: "datadoghq.eu",
     service: "oakbits",
     env: "prod",
