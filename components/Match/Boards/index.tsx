@@ -10,26 +10,29 @@ const Boards = ({ scores }: Props) => {
     <div className="w-full overflow-auto">
       <div className="flex flex-col">
         <Header scores={scores} />
-        {scores.series.map((row, rowI) => (
-          <div key={"serie" + rowI} className="flex flex-row">
-            <div
-              className="flex justify-center items-center text-3xl"
-              style={{ flex: "0 0 5rem" }}
-            >
-              {rowI + 1}
-            </div>
-            <div className="flex flex-row justify-around w-full gap-4">
-              {row.boards.map((board, boardI) => (
-                <Card
-                  key={rowI + "row" + boardI}
-                  board={board}
-                  boardI={boardI}
-                  rowI={rowI}
-                />
-              ))}
-            </div>
-          </div>
-        ))}
+        {scores.series.map(
+          (row, rowI) =>
+            row.boards[0] && (
+              <div key={"serie" + rowI} className="flex flex-row">
+                <div
+                  className="flex justify-center items-center text-3xl"
+                  style={{ flex: "0 0 5rem" }}
+                >
+                  {rowI + 1}
+                </div>
+                <div className="flex flex-row justify-around w-full gap-4">
+                  {row.boards.map((board, boardI) => (
+                    <Card
+                      key={rowI + "row" + boardI}
+                      board={board}
+                      boardI={boardI}
+                      rowI={rowI}
+                    />
+                  ))}
+                </div>
+              </div>
+            )
+        )}
       </div>
     </div>
   );

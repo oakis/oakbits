@@ -53,6 +53,7 @@ export const getServerSideProps = (async (context) => {
   const createDynamicGroups = (dataArray: Series[]): Series[] => {
     if (dataArray.length === 0 || dataArray[0].boards.length === 0) return [];
     const mappedData = dataArray.map((serie) => {
+      if (!serie.boards[0]) return serie;
       const numOfPlayers = serie.boards[0].scores.length;
 
       const newBoards: Board[] = Array.from(
