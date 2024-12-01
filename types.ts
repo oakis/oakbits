@@ -95,3 +95,20 @@ export interface StandingData {
   standingsDivisionId: number;
   clubTeamClubId: number;
 }
+
+export interface AlleyInfo {
+  hallAddress: string;
+  hallCity: string;
+  hallCountyId: number;
+  hallCountyName: string;
+  hallEmail: string;
+  hallId: number;
+  hallLocationLat: number;
+  hallLocationLng: number;
+  hallName: string;
+  hallNbrOfLanes: number;
+  hallOnlineScoringUrl: string;
+  hallPhoneNbr: string;
+  hallWebAddress: string;
+  hallZipCode: string;
+}
