@@ -13,12 +13,20 @@ export const getServerSideProps = (async (context) => {
   const { year, division } = context.params!;
   const apiKey = process.env.APIKEY;
 
-  const flatMatches: MatchData[] = await fetch(
-    `https://api.swebowl.se/api/v1/Match?APIKey=${apiKey}&divisionId=${division}&seasonId=${year}&matchStatus=`,
-    {
-      referrer: "https://bits.swebowl.se",
-    }
-  ).then((data) => data.json());
+  const [flatMatches, standings] = await Promise.all([
+    (await fetch(
+      `https://api.swebowl.se/api/v1/Match?APIKey=${apiKey}&divisionId=${division}&seasonId=${year}&matchStatus=`,
+      {
+        referrer: "https://bits.swebowl.se",
+      }
+    ).then((data) => data.json())) as MatchData[],
+    (await fetch(
+      `https://api.swebowl.se/api/v1/Standing?APIKey=${apiKey}&divisionId=${division}&seasonId=${year}`,
+      {
+        referrer: "https://bits.swebowl.se",
+      }
+    ).then((data) => data.json())) as StandingData[],
+  ]);
 
   const groupedMatches = flatMatches
     .map((m) => ({
@@ -72,13 +80,6 @@ export const getServerSideProps = (async (context) => {
     : currentRound.filter((match) => match.matchHasBeenPlayed) ?? [];
   const upcoming =
     currentRound.filter((match) => !match.matchHasBeenPlayed) ?? [];
-
-  const standings: StandingData[] = await fetch(
-    `https://api.swebowl.se/api/v1/Standing?APIKey=${apiKey}&divisionId=${division}&seasonId=${year}`,
-    {
-      referrer: "https://bits.swebowl.se",
-    }
-  ).then((data) => data.json());
 
   return {
     props: {
