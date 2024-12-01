@@ -272,4 +272,5 @@ export interface Props {
   scores: IScores;
   gameInfo: GameInfo;
   gameStats: GameStats;
+  scoringUrl: string | null;
 }
