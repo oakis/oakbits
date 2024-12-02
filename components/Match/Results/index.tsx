@@ -16,7 +16,7 @@ interface Props {
 const Results = ({ gameInfo, gameStats }: Props) => {
   return (
     gameStats.length !== 0 && (
-      <Table autoHeight classes="max-w-md" wrapperClasses="w-auto">
+      <Table autoHeight wrapperClasses="w-auto ">
         <TableHead>
           <tr>
             <TableHeadCell>BanP</TableHeadCell>

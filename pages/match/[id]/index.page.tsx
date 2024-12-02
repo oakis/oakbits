@@ -138,7 +138,7 @@ export default function Page({
       )}
       {isMobile ? (
         <div className="flex flex-row w-full justify-around gap-4">
-          <div className="flex flex-col gap-2 items-center w-full sm:w-3/6 px-4">
+          <div className="flex flex-col gap-2 items-center w-full px-4">
             <span className="text-1xl uppercase">
               {gameInfo.matchDayFormatted} {gameInfo.matchTimeFormatted}
             </span>
@@ -169,6 +169,7 @@ export default function Page({
         </div>
       )}
       <>
+        <div className="border border-slate-200" />
         <Boards scores={scores} />
         <Stats
           homeOrAway="home"
