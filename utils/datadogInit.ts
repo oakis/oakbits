@@ -1,6 +1,7 @@
-import { datadogRum, DefaultPrivacyLevel } from "@datadog/browser-rum";
+import { DefaultPrivacyLevel } from "@datadog/browser-rum";
 
-if (process.env.NEXT_PUBLIC_ENV !== "local") {
+export async function initializeDatadogRum() {
+  const { datadogRum } = await import("@datadog/browser-rum");
   datadogRum.init({
     applicationId: process.env.NEXT_PUBLIC_DATADOG_APPID as string,
     clientToken: process.env.NEXT_PUBLIC_DATADOG_TOKEN as string,
@@ -15,8 +16,4 @@ if (process.env.NEXT_PUBLIC_ENV !== "local") {
     trackLongTasks: true,
     defaultPrivacyLevel: DefaultPrivacyLevel.ALLOW,
   });
-}
-
-export default function DatadogInit() {
-  return null;
 }
