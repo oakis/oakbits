@@ -7,7 +7,7 @@ import { useEffect } from "react";
 
 export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
-    // if (process.env.NEXT_PUBLIC_ENV === "local") return;
+    if (process.env.NEXT_PUBLIC_ENV === "local") return;
 
     if (typeof window.Cookiebot !== "undefined" && window.Cookiebot.consented) {
       initializeDatadogRum();
