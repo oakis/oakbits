@@ -1,3 +1,4 @@
+import { fetchFromBits } from "@/utils/swebowl";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 interface ClubData {
@@ -15,12 +16,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<IClub[]>
 ) {
-  const data: ClubData[] = await fetch(
-    `https://api.swebowl.se/api/v1/Club?&APIKey=${process.env.APIKEY}`,
-    {
-      referrer: "https://bits.swebowl.se",
-    }
-  ).then((data) => data.json());
+  const data: ClubData[] = await fetchFromBits("Club");
 
   const clubs: IClub[] = data.map((club) => ({
     id: club.clubId,

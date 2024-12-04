@@ -6,26 +6,22 @@ import Main from "@/components/Main";
 import { MatchData, StandingData } from "@/types";
 import Header from "@/components/Header";
 import { useParams } from "next/navigation";
+import { fetchFromBits } from "@/utils/swebowl";
 
 // Gör Lag, Diff och P sticky i sidled. Övriga scrollbara.
 
 export const getServerSideProps = (async (context) => {
   const { year, division } = context.params!;
-  const apiKey = process.env.APIKEY;
 
   const [flatMatches, standings] = await Promise.all([
-    (await fetch(
-      `https://api.swebowl.se/api/v1/Match?APIKey=${apiKey}&divisionId=${division}&seasonId=${year}&matchStatus=`,
-      {
-        referrer: "https://bits.swebowl.se",
-      }
-    ).then((data) => data.json())) as MatchData[],
-    (await fetch(
-      `https://api.swebowl.se/api/v1/Standing?APIKey=${apiKey}&divisionId=${division}&seasonId=${year}`,
-      {
-        referrer: "https://bits.swebowl.se",
-      }
-    ).then((data) => data.json())) as StandingData[],
+    (await fetchFromBits(
+      "Match",
+      `&divisionId=${division}&seasonId=${year}&matchStatus=`
+    )) as MatchData[],
+    (await fetchFromBits(
+      "Standing",
+      `&divisionId=${division}&seasonId=${year}`
+    )) as StandingData[],
   ]);
 
   const groupedMatches = flatMatches

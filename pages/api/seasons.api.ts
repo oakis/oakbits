@@ -1,3 +1,4 @@
+import { fetchFromBits } from "@/utils/swebowl";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 interface SeasonData {
@@ -19,12 +20,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ISeason[]>
 ) {
-  const data: SeasonData[] = await fetch(
-    `https://api.swebowl.se/api/v1/Season?&APIKey=${process.env.APIKEY}`,
-    {
-      referrer: "https://bits.swebowl.se",
-    }
-  ).then((data) => data.json());
+  const data: SeasonData[] = await fetchFromBits("Season");
 
   const seasons: ISeason[] = data.map((season) => ({
     id: season.seasonId,

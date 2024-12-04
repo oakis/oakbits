@@ -18,31 +18,24 @@ import Boards from "@/components/Match/Boards";
 import useIsMobile from "@/hooks/useIsMobile";
 import { AlleyInfo } from "@/types";
 import { FaTv } from "react-icons/fa";
+import { fetchFromBits } from "@/utils/swebowl";
 
 export const getServerSideProps = (async (context) => {
   const { id } = context.params!;
-  const apiKey = process.env.APIKEY;
 
   const [gameInfo, gameStatsData, scoresData] = await Promise.all([
-    (await fetch(
-      `https://api.swebowl.se/api/v1/matchResult/GetHeadInfo?APIKey=${apiKey}&id=${id}`,
-      {
-        referrer: "https://bits.swebowl.se",
-      }
-    ).then((data) => data.json())) as GameInfo,
-    (await fetch(
-      `https://api.swebowl.se/api/v1/matchResult/GetHeadResultInfo?APIKey=${apiKey}&id=${id}`,
-      {
-        referrer: "https://bits.swebowl.se",
-      }
-    ).then((data) => data.json())) as GameStatsData,
-    (await fetch(
-      `https://api.swebowl.se/api/v1/matchResult/GetMatchScores?APIKey=${apiKey}&matchId=${id}`,
-      {
-        referrer: "https://bits.swebowl.se",
-      }
-    ).then((data) => data.json())) as IScores,
+    (await fetchFromBits("matchResult/GetHeadInfo", `&id=${id}`)) as GameInfo,
+    (await fetchFromBits(
+      "matchResult/GetHeadResultInfo",
+      `&id=${id}`
+    )) as GameStatsData,
+    (await fetchFromBits(
+      "matchResult/GetMatchScores",
+      `&matchId=${id}`
+    )) as IScores,
   ]);
+
+  console.log({ id, gameInfo, gameStatsData, scoresData });
 
   const gameStats: GameStats = gameStatsData.awayHeadDetails.map((_, i) => ({
     series: gameStatsData.homeHeadDetails[i].squadId,
@@ -81,26 +74,19 @@ export const getServerSideProps = (async (context) => {
     series: createDynamicGroups(scoresData.series),
   };
 
-  const playerStats: PlayerStats = await fetch(
-    `https://api.swebowl.se/api/v1/matchResult/GetMatchResults?APIKey=${apiKey}&matchId=${id}&matchSchemeId=${gameInfo.matchSchemeId}`,
-    {
-      referrer: "https://bits.swebowl.se",
-    }
-  ).then((data) => data.json());
+  const playerStats: PlayerStats = await fetchFromBits(
+    "matchResult/GetMatchResults",
+    `&matchId=${id}&matchSchemeId=${gameInfo.matchSchemeId}`
+  );
 
   let scoringUrl = null;
 
   if (!gameInfo.matchFinished) {
-    await fetch(
-      `https://api.swebowl.se/api/v1/Hall/${gameInfo.matchHallId}?APIKey=${apiKey}`,
-      {
-        referrer: "https://bits.swebowl.se",
-      }
-    )
-      .then((data) => data.json())
-      .then((json: AlleyInfo) => {
+    await fetchFromBits(`Hall/${gameInfo.matchHallId}`).then(
+      (json: AlleyInfo) => {
         scoringUrl = json.hallOnlineScoringUrl;
-      });
+      }
+    );
   }
 
   return {
