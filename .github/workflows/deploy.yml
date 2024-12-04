@@ -34,6 +34,7 @@ jobs:
           tags: oakis/nextjs-app:latest
           build-args: |
             APIKEY=${{ secrets.APIKEY }}
+            COOKIE=${{ secrets.COOKIE }}
             NEXT_PUBLIC_DATADOG_APPID=${{ secrets.NEXT_PUBLIC_DATADOG_APPID }}
             NEXT_PUBLIC_DATADOG_TOKEN=${{ secrets.NEXT_PUBLIC_DATADOG_TOKEN }}
 

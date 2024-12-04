@@ -1,3 +1,4 @@
+import { fetchFromBits } from "@/utils/swebowl";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 interface TeamData {
@@ -17,12 +18,10 @@ export default async function handler(
 ) {
   const { club, year } = req.query;
 
-  const data: TeamData[] = await fetch(
-    `https://api.swebowl.se/api/v1/Team?&APIKey=${process.env.APIKEY}&clubId=${club}&seasonId=${year}`,
-    {
-      referrer: "https://bits.swebowl.se",
-    }
-  ).then((data) => data.json());
+  const data: TeamData[] = await fetchFromBits(
+    "Team",
+    `&clubId=${club}&seasonId=${year}`
+  );
 
   const teams: ITeam[] = data.map((team) => ({
     id: team.teamId,
