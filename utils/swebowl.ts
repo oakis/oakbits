@@ -1,4 +1,8 @@
-export const fetchFromBits = async (endpoint: string, params?: string) => {
+export const fetchFromBits = async (
+  endpoint: string,
+  params?: string,
+  body?: object
+) => {
   try {
     return await fetch(
       `https://api.swebowl.se/api/v1/${endpoint}?APIKey=${process.env.APIKEY}${
@@ -8,9 +12,18 @@ export const fetchFromBits = async (endpoint: string, params?: string) => {
         referrer: "https://bits.swebowl.se",
         headers: {
           Cookie: process.env.COOKIE as string,
+          "Content-Type": "application/json",
         },
+        ...(body && { method: "post", body: JSON.stringify(body) }),
       }
-    ).then((data) => data.json());
+    )
+      .then((data) => {
+        if (data.status === 200) {
+          return data;
+        }
+        throw data;
+      })
+      .then((data) => data.json());
   } catch (error) {
     console.error(error);
   }

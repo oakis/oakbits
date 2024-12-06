@@ -55,35 +55,40 @@ const Stats = ({ stats, teamName, homeOrAway }: Props) => {
         </TableRow>
       </TableHead>
       <TableBody>
-        {stats.map((row, i) => (
-          <TableRow
-            key={row.licNbr}
-            index={i}
-            primaryColor={
-              homeOrAway === "home" ? primaryHomeColor : primaryAwayColor
-            }
-            secondaryColor={
-              homeOrAway === "home" ? secondaryHomeColor : secondaryAwayColor
-            }
-            classes="text-sm sm:text-base"
-          >
-            <TableCell classes="!text-left">
-              {row.player.split("(")[0]}
-              <br />({row.player.split("(")[1].replace(")", "")})
-            </TableCell>
-            <TableCell>{row.result1}</TableCell>
-            <TableCell>{row.result2}</TableCell>
-            <TableCell>{row.result3}</TableCell>
-            <TableCell>{row.result4}</TableCell>
-            <TableCell>{row.totalResult}</TableCell>
-            <TableCell>{row.totalSeries}</TableCell>
-            <TableCell>{row.lanePoint}</TableCell>
-            <TableCell>{row.place}</TableCell>
-            <TableCell>{row.rankPoints.toFixed(2)}</TableCell>
-            <TableCell>{row.laneRankPoints.toFixed(2)}</TableCell>
-            <TableCell>{row.totalPoints.toFixed(2)}</TableCell>
-          </TableRow>
-        ))}
+        {stats.map((row, i) => {
+          const [playerName, licenceNo] = row.player.split(/\(|\)/gi);
+          return (
+            <TableRow
+              key={row.licNbr}
+              index={i}
+              primaryColor={
+                homeOrAway === "home" ? primaryHomeColor : primaryAwayColor
+              }
+              secondaryColor={
+                homeOrAway === "home" ? secondaryHomeColor : secondaryAwayColor
+              }
+              classes="text-sm sm:text-base"
+            >
+              <TableCell classes="!text-left">
+                <a href={`/player/${licenceNo}`} className="text-black">
+                  {playerName}
+                  <br />({licenceNo})
+                </a>
+              </TableCell>
+              <TableCell>{row.result1}</TableCell>
+              <TableCell>{row.result2}</TableCell>
+              <TableCell>{row.result3}</TableCell>
+              <TableCell>{row.result4}</TableCell>
+              <TableCell>{row.totalResult}</TableCell>
+              <TableCell>{row.totalSeries}</TableCell>
+              <TableCell>{row.lanePoint}</TableCell>
+              <TableCell>{row.place}</TableCell>
+              <TableCell>{row.rankPoints.toFixed(2)}</TableCell>
+              <TableCell>{row.laneRankPoints.toFixed(2)}</TableCell>
+              <TableCell>{row.totalPoints.toFixed(2)}</TableCell>
+            </TableRow>
+          );
+        })}
       </TableBody>
     </Table>
   );
