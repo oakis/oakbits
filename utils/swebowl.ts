@@ -15,3 +15,33 @@ export const fetchFromBits = async (endpoint: string, params?: string) => {
     console.error(error);
   }
 };
+
+export const isSelectedTeam = (teamId: number, selectedTeam: string) =>
+  teamId.toString() === selectedTeam;
+
+export const getTeamUrl = (
+  season: number | string,
+  clubId: number | string,
+  teamId: number | string,
+  divisionId: number | string
+) =>
+  `https://bits.swebowl.se/team-detail?seasonId=${season}&clubId=${clubId}&teamId=${teamId}&divisionId=${divisionId}`;
+
+const defaultPercentage = 70;
+export const defaultMaxHCP = 40;
+
+export const getHCP = (
+  baseline: number,
+  strength: number,
+  percentage?: number,
+  maxHCP?: number
+): number =>
+  Math.max(
+    0,
+    Math.min(
+      maxHCP ?? defaultMaxHCP,
+      Math.round(
+        (baseline - strength) * ((percentage ?? defaultPercentage) / 100)
+      )
+    )
+  );
