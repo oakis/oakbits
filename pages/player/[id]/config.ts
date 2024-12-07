@@ -40,12 +40,12 @@ export interface PlayerInfo {
   agreementSecondClubId: number;
   overrideStrength: number;
   overrideAverage: number;
-  bestMatchResult: number;
-  bestMatchAvg: number;
-  bestMatchPlacement: number;
-  bestTournamentResult: number;
-  bestTournamentAvg: number;
-  bestTournamentPlacement: number;
+  bestMatchResult: number | null;
+  bestMatchAvg: number | null;
+  bestMatchPlacement: number | null;
+  bestTournamentResult: number | null;
+  bestTournamentAvg: number | null;
+  bestTournamentPlacement: number | null;
 }
 
 export interface CompetitionTypeData {

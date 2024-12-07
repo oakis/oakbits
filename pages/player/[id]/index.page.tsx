@@ -13,6 +13,7 @@ import {
 import ProfilePicture from "@/components/ProfilePicture";
 import Card from "./Card";
 import Matches from "./Matches";
+import { getHighestNumber, getLowestNumber } from "@/utils/array";
 
 const mapMatch = (match: CompetitionGameData): CompetitionGame => ({
   id: match.matchId ?? match.compId,
@@ -80,30 +81,28 @@ export const getServerSideProps = (async (context) => {
     [[], []]
   );
 
-  const bestMatchAvg = series.reduce(
-    (max, item) => (item.avg > max ? item.avg : max),
-    0
-  );
-  const bestMatchPlacement = series.reduce(
-    (min, item) => (item.placement < min ? item.placement : min),
-    Number.MAX_VALUE
-  );
-  const bestMatchResult = series.reduce(
-    (max, item) => (item.result > max ? item.result : max),
-    0
-  );
-  const bestTournamentAvg = tournaments.reduce(
-    (max, item) => (item.avg > max ? item.avg : max),
-    0
-  );
-  const bestTournamentPlacement = tournaments.reduce(
-    (min, item) => (item.placement < min ? item.placement : min),
-    Number.MAX_VALUE
-  );
-  const bestTournamentResult = tournaments.reduce(
-    (max, item) => (item.result > max ? item.result : max),
-    0
-  );
+  const bestMatchAvg = series.length ? getHighestNumber(series, "avg") : null;
+  const bestMatchPlacement = series.length
+    ? getLowestNumber(series, "placement")
+    : null;
+  const bestMatchResult = series.length
+    ? getHighestNumber(
+        series.filter((x) => x.numSeries === 4),
+        "result"
+      )
+    : null;
+  const bestTournamentAvg = tournaments.length
+    ? getHighestNumber(tournaments, "avg")
+    : null;
+  const bestTournamentPlacement = tournaments.length
+    ? getLowestNumber(tournaments, "placement")
+    : null;
+  const bestTournamentResult = tournaments.length
+    ? getHighestNumber(
+        tournaments.filter((x) => x.numSeries === 6),
+        "result"
+      )
+    : null;
 
   return {
     props: {
@@ -166,26 +165,46 @@ export default function Page({
         <Card title="Rankingplacering" value={playerInfo.playerRankPlace} />
         <Card title="Snitt" value={playerInfo.playerAverage} />
       </div>
-      <div className="flex flex-col gap-4">
-        <span className="text-2xl font-semibold">Match</span>
-        <div className="flex flex-row gap-4 flex-wrap">
-          <Card title="Bästa snitt" value={playerInfo.bestMatchAvg} />
-          <Card title="Bästa resultat" value={playerInfo.bestMatchResult} />
-          <Card title="Bästa placering" value={playerInfo.bestMatchPlacement} />
+      {playerCompetitions.series.length !== 0 ? (
+        <div className="flex flex-col gap-4">
+          <span className="text-2xl font-semibold">Match</span>
+          <div className="flex flex-row gap-4 flex-wrap">
+            {playerInfo.bestMatchAvg && (
+              <Card title="Bästa snitt" value={playerInfo.bestMatchAvg} />
+            )}
+            {playerInfo.bestMatchResult && (
+              <Card
+                title="Bästa resultat (4 serier)"
+                value={playerInfo.bestMatchResult}
+              />
+            )}
+            {playerInfo.bestMatchPlacement && (
+              <Card
+                title="Bästa placering"
+                value={playerInfo.bestMatchPlacement}
+              />
+            )}
+          </div>
         </div>
-      </div>
+      ) : null}
       <div className="flex flex-col gap-4">
         <span className="text-2xl font-semibold">Turnering</span>
         <div className="flex flex-row gap-4 flex-wrap">
-          <Card title="Bästa snitt" value={playerInfo.bestTournamentAvg} />
-          <Card
-            title="Bästa resultat"
-            value={playerInfo.bestTournamentResult}
-          />
-          <Card
-            title="Bästa placering"
-            value={playerInfo.bestTournamentPlacement}
-          />
+          {playerInfo.bestTournamentAvg && (
+            <Card title="Bästa snitt" value={playerInfo.bestTournamentAvg} />
+          )}
+          {playerInfo.bestTournamentResult && (
+            <Card
+              title="Bästa resultat (6 serier)"
+              value={playerInfo.bestTournamentResult}
+            />
+          )}
+          {playerInfo.bestTournamentPlacement && (
+            <Card
+              title="Bästa placering"
+              value={playerInfo.bestTournamentPlacement}
+            />
+          )}
           <Card
             title="GBG-Tour HCP"
             value={getHCP(228, playerInfo.playerStrength)}
