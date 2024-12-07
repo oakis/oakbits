@@ -6,7 +6,7 @@ import Table, {
   TableHeader,
 } from "@/components/Table";
 import clsx from "clsx";
-import { getTeamUrl, isSelectedTeam } from "@/utils";
+import { getTeamUrl, isSelectedTeam } from "@/utils/swebowl";
 import Link from "next/link";
 import HeaderText from "@/components/HeaderText";
 import { Match } from "@/pages/division/[year]/[club]/[team]/[division]/config";

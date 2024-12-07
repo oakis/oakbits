@@ -7,7 +7,7 @@ import Table, {
 } from "@/components/Table";
 import clsx from "clsx";
 import { MdOutlineArrowDropDown, MdOutlineArrowDropUp } from "react-icons/md";
-import { getTeamUrl, isSelectedTeam } from "@/utils";
+import { getTeamUrl, isSelectedTeam } from "@/utils/swebowl";
 import HeaderText from "@/components/HeaderText";
 import ClubLogo from "@/components/ClubLogo";
 import { Standing } from "@/pages/division/[year]/[club]/[team]/[division]/config";

@@ -35,8 +35,6 @@ export const getServerSideProps = (async (context) => {
     )) as IScores,
   ]);
 
-  console.log({ id, gameInfo, gameStatsData, scoresData });
-
   const gameStats: GameStats = gameStatsData.awayHeadDetails.map((_, i) => ({
     series: gameStatsData.homeHeadDetails[i].squadId,
     homeRp: gameStatsData.homeHeadDetails[i].teamRP,
