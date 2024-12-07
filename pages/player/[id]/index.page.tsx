@@ -129,7 +129,6 @@ export const getServerSideProps = (async (context) => {
 
 export default function Page({
   playerInfo,
-  competitionTypes,
   playerCompetitions,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
