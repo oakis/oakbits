@@ -35,6 +35,9 @@ const Navigation = () => {
           <a href="/">Hem</a>
         </li>
         <li>
+          <a href="/player">Licenser</a>
+        </li>
+        <li>
           <a href="/division">Seriespel</a>
         </li>
       </ul>
