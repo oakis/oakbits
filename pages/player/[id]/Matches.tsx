@@ -7,6 +7,7 @@ import Table, {
 } from "@/components/Table";
 import clsx from "clsx";
 import { CompetitionGame } from "./config";
+import { formatDate } from "@/utils/date";
 
 interface MatchesProps {
   games: CompetitionGame[];
@@ -53,7 +54,7 @@ const Matches = ({ games, gameType, title }: MatchesProps) => {
               {gameType === "tournament" && <TableCell>{game.hcp}</TableCell>}
               <TableCell>{game.numSeries}</TableCell>
               <TableCell>{game.avg}</TableCell>
-              <TableCell>{game.startDate}</TableCell>
+              <TableCell>{formatDate(game.startDate)}</TableCell>
             </tr>
           ))}
         </TableBody>

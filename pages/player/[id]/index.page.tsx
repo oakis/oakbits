@@ -2,11 +2,13 @@ import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Main from "@/components/Main";
 import { fetchFromBits, getHCP } from "@/utils/swebowl";
 import {
+  calculateMonthlyAverages,
   CompetitionGame,
-  CompetitionGameData,
   CompetitionTypeData,
+  mapMatch,
   Params,
   PlayerCompetitionData,
+  PlayerGraphData,
   PlayerInfoData,
   Props,
 } from "./config";
@@ -14,28 +16,7 @@ import ProfilePicture from "@/components/ProfilePicture";
 import Card from "./Card";
 import Matches from "./Matches";
 import { getHighestNumber, getLowestNumber } from "@/utils/array";
-
-const mapMatch = (match: CompetitionGameData): CompetitionGame => ({
-  id: match.matchId ?? match.compId,
-  type: match.type === 1 ? "match" : "tournament",
-  avg: Math.round(match.licenceEventResult / match.numberOfSeries),
-  category: `${match.rankTypeDescriptionMatch ?? match.rankTypeDescription} - ${
-    match.maxPoints
-  }`,
-  team: match.teamAlias,
-  location: match.hallName,
-  name:
-    match.type === 1
-      ? `${match.divisionName}`
-      : `${match.competitionName} - ${match.className}`,
-  numSeries: match.numberOfSeries,
-  placement: match.placeTotal,
-  result: match.licenceEventResult,
-  startDate: match.eventStartDate,
-  ...(match.type === 2 && {
-    hcp: match.hcp,
-  }),
-});
+import LineGraph from "./LineGraph";
 
 export const getServerSideProps = (async (context) => {
   const { id } = context.params!;
@@ -44,28 +25,33 @@ export const getServerSideProps = (async (context) => {
   const fromDate = new Date(Date.UTC(today.getFullYear(), 6, 1, 0, 0, 0, 0));
   const toDate = new Date(Date.UTC(today.getFullYear() + 1, 5, 30, 0, 0, 0, 0));
 
-  const [playerInfo, competitionTypes, playerCompetitions] = await Promise.all([
-    (await fetchFromBits(
-      "player/PlayerProfileDetail",
-      `&licenseNumber=${id}&seasonId=2024`
-    )) as PlayerInfoData,
-    (await fetchFromBits(
-      "Player/PlayerDetailRankTypeList",
-      `&licenseNumber=${id}`
-    )) as CompetitionTypeData[],
-    (await fetchFromBits("Player/PlayerDetail", undefined, {
-      search: id,
-      QueryTypeId: 4,
-      RankTypeId: "",
-      MatchTypeId: "",
-      FromDate: fromDate,
-      ToDate: toDate,
-      take: "500",
-      skip: 0,
-      page: 1,
-      pageSize: "500",
-    })) as PlayerCompetitionData,
-  ]);
+  const [playerInfo, competitionTypes, playerCompetitions, playerGraphData] =
+    await Promise.all([
+      (await fetchFromBits(
+        "player/PlayerProfileDetail",
+        `&licenseNumber=${id}&seasonId=2024`
+      )) as PlayerInfoData,
+      (await fetchFromBits(
+        "Player/PlayerDetailRankTypeList",
+        `&licenseNumber=${id}`
+      )) as CompetitionTypeData[],
+      (await fetchFromBits("Player/PlayerDetail", undefined, {
+        search: id,
+        QueryTypeId: 4,
+        RankTypeId: "",
+        MatchTypeId: "",
+        FromDate: fromDate,
+        ToDate: toDate,
+        take: "500",
+        skip: 0,
+        page: 1,
+        pageSize: "500",
+      })) as PlayerCompetitionData,
+      (await fetchFromBits(
+        "Player/PlayerDetailGraphData",
+        `&licenseNumber=${id}&type=2`
+      )) as PlayerGraphData[],
+    ]);
 
   const [series, tournaments] = playerCompetitions.data.reduce<
     [CompetitionGame[], CompetitionGame[]]
@@ -104,6 +90,23 @@ export const getServerSideProps = (async (context) => {
       )
     : null;
 
+  const monthlyAvg = calculateMonthlyAverages(
+    [...series, ...tournaments].sort((a, b) => {
+      if (a.startDate > b.startDate) return 1;
+      if (b.startDate > a.startDate) return -1;
+      return 0;
+    })
+  );
+
+  const playerGraph = playerGraphData.map((graph) => {
+    const graphMonth = graph.date.slice(0, 7);
+    const monthlyAvgMonth = monthlyAvg.find((avg) => avg.month === graphMonth);
+    if (monthlyAvgMonth) {
+      return { ...graph, monthAverage: monthlyAvgMonth.avg };
+    }
+    return graph;
+  });
+
   return {
     props: {
       playerInfo: {
@@ -123,6 +126,7 @@ export const getServerSideProps = (async (context) => {
         series,
         tournaments,
       },
+      playerGraph,
     },
   };
 }) satisfies GetServerSideProps<Props, Params>;
@@ -130,6 +134,7 @@ export const getServerSideProps = (async (context) => {
 export default function Page({
   playerInfo,
   playerCompetitions,
+  playerGraph,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <Main classes="px-4">
@@ -206,10 +211,11 @@ export default function Page({
           )}
           <Card
             title="GBG-Tour HCP"
-            value={getHCP(228, playerInfo.playerStrength)}
+            value={`~${getHCP(228, playerInfo.playerStrength)}`}
           />
         </div>
       </div>
+      <LineGraph data={playerGraph} />
       <Matches
         gameType="match"
         games={playerCompetitions.series}

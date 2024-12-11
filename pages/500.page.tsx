@@ -2,7 +2,7 @@ import Main from "@/components/Main";
 import Link from "next/link";
 
 export default function Custom500(data: unknown) {
-  console.log({ data });
+  console.error({ data });
   return (
     <Main classes="px-4 sm:px-0">
       <div>

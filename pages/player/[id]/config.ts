@@ -116,6 +116,17 @@ export interface PlayerCompetitionData {
   };
 }
 
+export interface PlayerGraphData {
+  date: string;
+  strength: number;
+  rankPoints: number;
+  average: number;
+  yearAverage: number;
+  yearRankPoints: number;
+  xAxisText: string;
+  monthAverage?: number;
+}
+
 export interface PlayerCompetition {
   series: CompetitionGame[];
   tournaments: CompetitionGame[];
@@ -125,4 +136,55 @@ export interface Props {
   playerInfo: PlayerInfo;
   competitionTypes: CompetitionType[];
   playerCompetitions: PlayerCompetition;
+  playerGraph: PlayerGraphData[];
 }
+
+interface MonthlyAverage {
+  month: string;
+  avg: number;
+}
+
+export const calculateMonthlyAverages = (
+  games: CompetitionGame[]
+): MonthlyAverage[] => {
+  const monthlyData: Record<string, number[]> = {};
+
+  games.forEach((game) => {
+    const month = game.startDate.slice(0, 7);
+    if (!monthlyData[month]) {
+      monthlyData[month] = [];
+    }
+    monthlyData[month].push(game.avg);
+  });
+
+  const monthlyAverages: MonthlyAverage[] = Object.entries(monthlyData).map(
+    ([month, averages]) => ({
+      month,
+      avg: averages.reduce((sum, val) => sum + val, 0) / averages.length,
+    })
+  );
+
+  return monthlyAverages;
+};
+
+export const mapMatch = (match: CompetitionGameData): CompetitionGame => ({
+  id: match.matchId ?? match.compId,
+  type: match.type === 1 ? "match" : "tournament",
+  avg: Math.round(match.licenceEventResult / match.numberOfSeries),
+  category: `${match.rankTypeDescriptionMatch ?? match.rankTypeDescription} - ${
+    match.maxPoints
+  }`,
+  team: match.teamAlias,
+  location: match.hallName,
+  name:
+    match.type === 1
+      ? `${match.divisionName}`
+      : `${match.competitionName} - ${match.className}`,
+  numSeries: match.numberOfSeries,
+  placement: match.placeTotal,
+  result: match.licenceEventResult,
+  startDate: match.eventStartDate,
+  ...(match.type === 2 && {
+    hcp: match.hcp,
+  }),
+});
