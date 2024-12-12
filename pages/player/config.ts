@@ -17,4 +17,5 @@ export interface PlayerData {
 
 export interface Props {
   players: Player[];
+  totalPlayers: number;
 }

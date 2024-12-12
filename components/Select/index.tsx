@@ -25,7 +25,7 @@ const Select = ({ onChange, value, items }: SelectProps) => {
         value={value}
         onChange={onChange}
         className={clsx(
-          "px-2 py-1 pr-8 rounded-md appearance-none",
+          "px-2 py-1 pr-8 rounded-md appearance-none text-black",
           isMobile && "w-full"
         )}
       >
@@ -36,7 +36,7 @@ const Select = ({ onChange, value, items }: SelectProps) => {
         ))}
       </select>
       <span
-        className="absolute h-8 flex items-center"
+        className="absolute h-8 flex items-center text-black"
         style={{
           top: 0,
           right: getIconXPos(),

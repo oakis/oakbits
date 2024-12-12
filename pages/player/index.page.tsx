@@ -13,26 +13,31 @@ import clsx from "clsx";
 import { useEffect, useState } from "react";
 import useIsMobile from "@/hooks/useIsMobile";
 import { useRouter } from "next/router";
+import Pagination from "@/components/Table/Pagination";
 
 const twoDecimals = (num: number): string | number =>
   num === 0 ? "-" : num.toFixed(2);
 
+interface Query {
+  [key: string]: string;
+}
+
 export const getServerSideProps = (async (context) => {
-  const { query } = context;
+  const query = context.query as Query;
 
   const search = query.search ?? "";
   const size = query.size ?? "10";
   const active = query.active === "false" ? false : true;
+  const page = query.page ?? "1";
 
   const players: PlayerData = await fetchFromBits("player/GetAll", undefined, {
     search,
     TakeOnlyActive: active,
     take: size,
-    skip: 0,
-    page: 1,
+    skip: (parseInt(page) - 1) * parseInt(size),
+    page,
     pageSize: size,
     sort: [
-      { field: "clubName", dir: "asc" },
       { field: "firstName", dir: "asc" },
     ],
   });
@@ -40,14 +45,16 @@ export const getServerSideProps = (async (context) => {
   return {
     props: {
       players: players.data,
+      totalPlayers: players.total,
     },
   };
 }) satisfies GetServerSideProps<Props>;
 
 export default function Page({
   players,
+  totalPlayers,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { query, push } = useRouter();
+  const { query, push, pathname } = useRouter();
   const isMobile = useIsMobile();
 
   const [filter, setFilter] = useState(query.search ?? "");
@@ -74,7 +81,7 @@ export default function Page({
         };
 
         push({
-          pathname: window.location.pathname,
+          pathname,
           query: newQuery,
         });
       }, 300);
@@ -85,7 +92,7 @@ export default function Page({
   }, [filter, active]);
 
   return (
-    <Main classes="px-4">
+    <Main classes="px-4 gap-4">
       <div className="flex flex-row gap-4 items-center">
         <input
           value={filter}
@@ -142,6 +149,13 @@ export default function Page({
               </TableRow>
             ))}
           </TableBody>
+          <tfoot>
+            <TableRow index={0} classes="bg-slate-600 text-slate-100">
+              <TableCell colSpan={9}>
+                <Pagination total={totalPlayers} />
+              </TableCell>
+            </TableRow>
+          </tfoot>
         </Table>
       )}
     </Main>
