@@ -20,13 +20,14 @@ const Select = ({ onChange, value, items }: SelectProps) => {
   };
 
   return (
-    <div
-      className={clsx("relative", isMobile && "w-full px-4")}
-    >
+    <div className={clsx("relative", isMobile && "w-full px-4")}>
       <select
         value={value}
         onChange={onChange}
-        className={clsx("px-2 py-1 pr-8 rounded-md appearance-none", isMobile && "w-full")}
+        className={clsx(
+          "px-2 py-1 pr-8 rounded-md appearance-none",
+          isMobile && "w-full"
+        )}
       >
         {items.map((s) => (
           <option key={s.id} value={s.id}>
@@ -39,9 +40,10 @@ const Select = ({ onChange, value, items }: SelectProps) => {
         style={{
           top: 0,
           right: getIconXPos(),
+          pointerEvents: "none",
         }}
       >
-        <FaChevronDown size="16" />
+        <FaChevronDown size="16" style={{ pointerEvents: "none" }} />
       </span>
     </div>
   );
