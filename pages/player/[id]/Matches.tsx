@@ -6,10 +6,8 @@ import Table, {
   TableHeader,
   TableRow,
 } from "@/components/Table";
-import clsx from "clsx";
 import { CompetitionGame } from "./config";
 import { formatDate } from "@/utils/date";
-import Pagination from "@/components/Table/Pagination";
 
 interface MatchesProps {
   games: CompetitionGame[];
