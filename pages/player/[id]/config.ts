@@ -4,6 +4,12 @@ export interface Params extends ParsedUrlQuery {
   id: string;
 }
 
+export enum PlayerQueryType {
+  Rullande = "1",
+  Spelstyrkegrundande = "4",
+  Rankinggrundande = "3",
+}
+
 export interface PlayerInfoData {
   firstName: string;
   surName: string;
