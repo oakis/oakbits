@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "type": "tsc",
+    "type:ci": "tsc --noEmit --pretty",
     "test": "vitest"
   },
   "dependencies": {
