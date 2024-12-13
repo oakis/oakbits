@@ -1,5 +1,3 @@
-name: Quality Check
-
 on:
   pull_request:
     branches:
