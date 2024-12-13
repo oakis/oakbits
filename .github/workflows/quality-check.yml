@@ -1,3 +1,5 @@
+name: Quality Check
+
 on:
   pull_request:
     branches:
@@ -5,7 +7,6 @@ on:
 
 jobs:
   checks:
-    name: Quality Check
     runs-on: ubuntu-latest
 
     steps:
