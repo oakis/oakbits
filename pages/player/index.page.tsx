@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import useIsMobile from "@/hooks/useIsMobile";
 import { useRouter } from "next/router";
 import Pagination from "@/components/Table/Pagination";
+import { formatDate } from "@/utils/date";
 
 const twoDecimals = (num: number): string | number =>
   num === 0 ? "-" : num.toFixed(2);
@@ -37,9 +38,7 @@ export const getServerSideProps = (async (context) => {
     skip: (parseInt(page) - 1) * parseInt(size),
     page,
     pageSize: size,
-    sort: [
-      { field: "firstName", dir: "asc" },
-    ],
+    sort: [{ field: "firstName", dir: "asc" }],
   });
 
   return {
@@ -140,7 +139,7 @@ export default function Page({
                 </TableCell>
                 <TableCell>{player.firstName}</TableCell>
                 <TableCell>{player.surName}</TableCell>
-                <TableCell>{player.age}</TableCell>
+                <TableCell>{formatDate(player.age)}</TableCell>
                 <TableCell>{player.county}</TableCell>
                 <TableCell>{player.clubName}</TableCell>
                 <TableCell>{player.licTypeName}</TableCell>

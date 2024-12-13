@@ -67,6 +67,8 @@ export const getServerSideProps = (async (context) => {
     [[], []]
   );
 
+  const sixSeriesTournaments = tournaments.filter((x) => x.numSeries === 6);
+
   const bestMatchAvg = series.length ? getHighestNumber(series, "avg") : null;
   const bestMatchPlacement = series.length
     ? getLowestNumber(series, "placement")
@@ -83,11 +85,8 @@ export const getServerSideProps = (async (context) => {
   const bestTournamentPlacement = tournaments.length
     ? getLowestNumber(tournaments, "placement")
     : null;
-  const bestTournamentResult = tournaments.length
-    ? getHighestNumber(
-        tournaments.filter((x) => x.numSeries === 6),
-        "result"
-      )
+  const bestTournamentResult = sixSeriesTournaments.length
+    ? getHighestNumber(sixSeriesTournaments, "result")
     : null;
 
   const monthlyAvg = calculateMonthlyAverages(
