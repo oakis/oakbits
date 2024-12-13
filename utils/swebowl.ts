@@ -6,9 +6,9 @@ export const fetchFromBits = async (
   const startTime = performance.now();
   try {
     return await fetch(
-      `https://api.swebowl.se/api/v1/${endpoint}?APIKey=${process.env.APIKEY}${
-        params ? params : ""
-      }`,
+      `https://api.swebowl.se/api/v1/${endpoint.toLowerCase()}?apikey=${
+        process.env.APIKEY
+      }${params ? params : ""}`,
       {
         referrer: "https://bits.swebowl.se",
         headers: {
@@ -29,8 +29,13 @@ export const fetchFromBits = async (
     console.error(error);
   } finally {
     console.log(
-      `Request ${endpoint} took ${Math.round(performance.now() - startTime)}ms`
+      `Request ${endpoint.toLowerCase()}${params ?? ""} took ${Math.round(
+        performance.now() - startTime
+      )}ms`
     );
+    if (body) {
+      console.log("with body", body);
+    }
   }
 };
 
