@@ -4,10 +4,12 @@ import Table, {
   TableHead,
   TableHeadCell,
   TableHeader,
+  TableRow,
 } from "@/components/Table";
 import clsx from "clsx";
 import { CompetitionGame } from "./config";
 import { formatDate } from "@/utils/date";
+import Pagination from "@/components/Table/Pagination";
 
 interface MatchesProps {
   games: CompetitionGame[];
@@ -37,14 +39,7 @@ const Matches = ({ games, gameType, title }: MatchesProps) => {
         </TableHead>
         <TableBody>
           {games.map((game, i) => (
-            <tr
-              key={game.id}
-              className={clsx(
-                "border",
-                i % 2 === 0 && "bg-slate-100",
-                i % 2 !== 0 && "bg-white"
-              )}
-            >
+            <TableRow key={game.id} index={i}>
               <TableCell classes="!text-left">{game.name}</TableCell>
               <TableCell>{game.placement}</TableCell>
               <TableCell>{game.category}</TableCell>
@@ -55,7 +50,7 @@ const Matches = ({ games, gameType, title }: MatchesProps) => {
               <TableCell>{game.numSeries}</TableCell>
               <TableCell>{game.avg}</TableCell>
               <TableCell>{formatDate(game.startDate)}</TableCell>
-            </tr>
+            </TableRow>
           ))}
         </TableBody>
       </Table>

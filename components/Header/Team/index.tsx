@@ -8,7 +8,9 @@ const Team = () => {
     setTeam(event.target.value);
   };
 
-  return <Select onChange={onChange} value={team} items={teams} />;
+  const items = teams.map((t) => ({ ...t, id: t.id.toString() }));
+
+  return <Select onChange={onChange} value={team} items={items} />;
 };
 
 export default Team;

@@ -10,6 +10,7 @@ import {
   PlayerCompetitionData,
   PlayerGraphData,
   PlayerInfoData,
+  PlayerQueryType,
   Props,
 } from "./config";
 import ProfilePicture from "@/components/ProfilePicture";
@@ -17,9 +18,13 @@ import Card from "./Card";
 import Matches from "./Matches";
 import { getHighestNumber, getLowestNumber } from "@/utils/array";
 import LineGraph from "./LineGraph";
+import { useRouter } from "next/router";
+import Select from "@/components/Select";
+import useIsMobile from "@/hooks/useIsMobile";
 
 export const getServerSideProps = (async (context) => {
   const { id } = context.params!;
+  const { type } = context.query;
 
   const today = new Date();
   const fromDate = new Date(Date.UTC(today.getFullYear(), 6, 1, 0, 0, 0, 0));
@@ -37,7 +42,7 @@ export const getServerSideProps = (async (context) => {
       )) as CompetitionTypeData[],
       (await fetchFromBits("Player/PlayerDetail", undefined, {
         search: id,
-        QueryTypeId: 4,
+        QueryTypeId: type ?? PlayerQueryType.Spelstyrkegrundande,
         RankTypeId: "",
         MatchTypeId: "",
         FromDate: fromDate,
@@ -135,6 +140,17 @@ export default function Page({
   playerCompetitions,
   playerGraph,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const { push, query } = useRouter();
+  const isMobile = useIsMobile();
+
+  const goTo = (queryType: PlayerQueryType) => {
+    push(
+      { pathname: `/player/${query.id}`, query: { type: queryType } },
+      undefined,
+      { scroll: false }
+    );
+  };
+
   return (
     <Main classes="px-4">
       <div className="flex flex-row gap-4 items-center">
@@ -211,6 +227,35 @@ export default function Page({
           <Card
             title="GBG-Tour HCP"
             value={`~${getHCP(228, playerInfo.playerStrength)}`}
+          />
+        </div>
+      </div>
+      <div
+        className="flex justify-end"
+        style={
+          isMobile ? { marginLeft: -16, width: "calc(100% + 32px)" } : undefined
+        }
+      >
+        <div className="bg-slate-600 p-4 rounded-none lg:rounded-xl w-full lg:w-auto">
+          <Select
+            wrapperClasses="px-0 !w-auto"
+            onChange={(event) => {
+              goTo(event.target.value as PlayerQueryType);
+            }}
+            items={[
+              {
+                id: PlayerQueryType.Spelstyrkegrundande,
+                name: "Spelstyrkegrundande",
+              },
+              {
+                id: PlayerQueryType.Rankinggrundande,
+                name: "Rankinggrundande",
+              },
+              {
+                id: PlayerQueryType.Rullande,
+                name: "Rullande helår",
+              },
+            ]}
           />
         </div>
       </div>

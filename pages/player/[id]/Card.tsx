@@ -10,7 +10,7 @@ const Card = (props: CardProps) => {
   return (
     <div
       className={clsx(
-        "flex flex-col gap-1 rounded-2xl border-2 border-slate-200 shadow-slate-700 shadow-sm w-[calc(50%-0.5rem)] p-2 text-center",
+        "flex flex-col gap-1 rounded-2xl border-2 border-slate-200 shadow-slate-700 shadow-sm w-[calc(50%-0.5rem)] lg:w-[calc(25%-1rem)] p-2 text-center",
         props.classes
       )}
     >
