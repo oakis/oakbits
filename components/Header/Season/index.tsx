@@ -8,7 +8,9 @@ const Season = () => {
     setSeason(event.target.value);
   };
 
-  return <Select onChange={onChange} value={season} items={seasons} />;
+  const items = seasons.map((s) => ({ ...s, id: s.id.toString() }));
+
+  return <Select onChange={onChange} value={season} items={items} />;
 };
 
 export default Season;

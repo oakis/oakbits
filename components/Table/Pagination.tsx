@@ -9,10 +9,10 @@ interface PaginationProps {
 }
 
 const sizes = [
-  { id: 10, name: "10" },
-  { id: 25, name: "25" },
-  { id: 50, name: "50" },
-  { id: 100, name: "100" },
+  { id: "10", name: "10" },
+  { id: "25", name: "25" },
+  { id: "50", name: "50" },
+  { id: "100", name: "100" },
 ];
 
 const Pagination = ({ total }: PaginationProps) => {
@@ -48,7 +48,7 @@ const Pagination = ({ total }: PaginationProps) => {
   }, [page, size]);
 
   const items = Array.from({ length: Math.ceil(total / size) }).map(
-    (_, num) => ({ id: num + 1, name: `Sida ${num + 1}` })
+    (_, num) => ({ id: (num + 1).toString(), name: `Sida ${num + 1}` })
   );
 
   return (
