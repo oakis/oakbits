@@ -30,7 +30,7 @@ const Navigation = () => {
         show ? "translate-y-0" : "-translate-y-full"
       )}
     >
-      <ul className="flex space-x-4 container mx-auto px-4 sm:px-0">
+      <ul className="flex space-x-4 container mx-auto px-4">
         <li>
           <a href="/">Hem</a>
         </li>
