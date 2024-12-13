@@ -3,6 +3,7 @@ export const fetchFromBits = async (
   params?: string,
   body?: object
 ) => {
+  const startTime = performance.now();
   try {
     return await fetch(
       `https://api.swebowl.se/api/v1/${endpoint}?APIKey=${process.env.APIKEY}${
@@ -26,6 +27,10 @@ export const fetchFromBits = async (
       .then((data) => data.json());
   } catch (error) {
     console.error(error);
+  } finally {
+    console.log(
+      `Request ${endpoint} took ${Math.round(performance.now() - startTime)}ms`
+    );
   }
 };
 
