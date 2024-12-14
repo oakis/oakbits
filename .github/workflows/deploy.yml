@@ -8,10 +8,17 @@ on:
     branches:
       - master
 
+permissions:
+  contents: read
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: Actions
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
 
     steps:
       - name: Check out the code
@@ -55,3 +62,8 @@ jobs:
             docker stop nextjs-app || true
             docker rm nextjs-app || true
             docker run -d -p 3000:3000 --name nextjs-app oakis/nextjs-app:latest
+
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release
