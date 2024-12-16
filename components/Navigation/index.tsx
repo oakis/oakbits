@@ -40,6 +40,9 @@ const Navigation = () => {
         <li>
           <a href="/division">Seriespel</a>
         </li>
+        <li>
+          <a href="/club">Föreningar</a>
+        </li>
       </ul>
     </nav>
   );
