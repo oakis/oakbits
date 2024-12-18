@@ -100,7 +100,7 @@ export default function Page({
             "px-2 py-1 pr-8 rounded-md bg-slate-100 relative",
             isMobile && "w-full"
           )}
-          placeholder="Sök efter namn eller förening.."
+          placeholder="Sök efter förening.."
         />
       </div>
       {clubs.length === 0 ? (

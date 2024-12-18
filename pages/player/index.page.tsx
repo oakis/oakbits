@@ -2,22 +2,11 @@ import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Main from "@/components/Main";
 import { fetchFromBits } from "@/utils/swebowl";
 import { Props, PlayerData } from "./config";
-import Table, {
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeadCell,
-  TableRow,
-} from "@/components/Table";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import useIsMobile from "@/hooks/useIsMobile";
 import { useRouter } from "next/router";
-import Pagination from "@/components/Table/Pagination";
-import { formatDate } from "@/utils/date";
-
-const twoDecimals = (num: number): string | number =>
-  num === 0 ? "-" : num.toFixed(2);
+import PlayerTable from "@/components/PlayerTable";
 
 interface Query {
   [key: string]: string;
@@ -117,45 +106,7 @@ export default function Page({
           Hittade inga licenser. Prova att söka på något annat.
         </span>
       ) : (
-        <Table>
-          <TableHead>
-            <TableRow index={0} classes="bg-slate-600 text-slate-100">
-              <TableHeadCell>Licensnr.</TableHeadCell>
-              <TableHeadCell>Förnamn</TableHeadCell>
-              <TableHeadCell>Efternamn</TableHeadCell>
-              <TableHeadCell>Födelsedatum</TableHeadCell>
-              <TableHeadCell>Distrikt</TableHeadCell>
-              <TableHeadCell>Förening</TableHeadCell>
-              <TableHeadCell>Licenstyp</TableHeadCell>
-              <TableHeadCell>Spelstyrka</TableHeadCell>
-              <TableHeadCell>Snitt</TableHeadCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {players.map((player, i) => (
-              <TableRow key={player.licNbr} index={i + 1}>
-                <TableCell>
-                  <a href={`/player/${player.licNbr}`}>{player.licNbr}</a>
-                </TableCell>
-                <TableCell>{player.firstName}</TableCell>
-                <TableCell>{player.surName}</TableCell>
-                <TableCell>{formatDate(player.age)}</TableCell>
-                <TableCell>{player.county}</TableCell>
-                <TableCell>{player.clubName}</TableCell>
-                <TableCell>{player.licTypeName}</TableCell>
-                <TableCell>{twoDecimals(player.licenceSkillLevel)}</TableCell>
-                <TableCell>{twoDecimals(player.licenceAverage)}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-          <tfoot>
-            <TableRow index={0} classes="bg-slate-600 text-slate-100">
-              <TableCell colSpan={9}>
-                <Pagination total={totalPlayers} />
-              </TableCell>
-            </TableRow>
-          </tfoot>
-        </Table>
+        <PlayerTable players={players} totalPlayers={totalPlayers} />
       )}
     </Main>
   );
