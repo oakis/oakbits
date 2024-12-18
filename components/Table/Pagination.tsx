@@ -6,23 +6,31 @@ import clsx from "clsx";
 
 interface PaginationProps {
   total: number;
+  defaultSize?: PaginationSizes;
 }
 
-const sizes = [
-  { id: "10", name: "10" },
-  { id: "25", name: "25" },
-  { id: "50", name: "50" },
-  { id: "100", name: "100" },
-];
+export enum PaginationSizes {
+  Ten = "10",
+  TwentyFive = "25",
+  Fifty = "50",
+  OneHundred = "100",
+}
 
-const Pagination = ({ total }: PaginationProps) => {
+const sizes = Object.values(PaginationSizes).map((value) => ({
+  id: value,
+  name: value,
+}));
+
+const Pagination = ({ total, defaultSize }: PaginationProps) => {
   const { query, pathname, push } = useRouter();
 
   const [page, setPage] = useState<number>(
     query.page ? parseInt(query.page as string) : 1
   );
-  const [size, setSize] = useState<number>(
-    query.size ? parseInt(query.size as string) : 10
+  const [size, setSize] = useState<PaginationSizes>(
+    query.size
+      ? (query.size as PaginationSizes)
+      : defaultSize ?? PaginationSizes.Ten
   );
 
   const goToNext = () => {
@@ -39,7 +47,7 @@ const Pagination = ({ total }: PaginationProps) => {
 
   const onSelectSize = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setPage(1);
-    setSize(parseInt(event.target.value));
+    setSize(event.target.value as PaginationSizes);
   };
 
   useEffect(() => {
@@ -47,7 +55,7 @@ const Pagination = ({ total }: PaginationProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, size]);
 
-  const items = Array.from({ length: Math.ceil(total / size) }).map(
+  const items = Array.from({ length: Math.ceil(total / parseInt(size)) }).map(
     (_, num) => ({ id: (num + 1).toString(), name: `Sida ${num + 1}` })
   );
 
@@ -64,8 +72,8 @@ const Pagination = ({ total }: PaginationProps) => {
         <Select value={page} items={items} onChange={onSelectPage} />
         <button
           onClick={goToNext}
-          disabled={page * size > total}
-          className={clsx(page * size > total && "text-gray-400")}
+          disabled={page * parseInt(size) > total}
+          className={clsx(page * parseInt(size) > total && "text-gray-400")}
         >
           <FaCaretRight size="24" />
         </button>

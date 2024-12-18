@@ -83,20 +83,19 @@ const Standings = ({ standings, team, season, divisionName }: Props) => {
               <TableCell classes="!text-left">
                 <span className="flex items-center">
                   <span className="flex items-center gap-3">
-                    <span className="w-8 h-8 relative">
-                      <ClubLogo
-                        id={standing.clubTeamClubId}
-                        name={standing.standingsTeamName}
-                        imageProps={{
-                          fill: true,
-                          sizes: "32px",
-                          style: {
-                            objectFit: "contain",
-                            objectPosition: "center center",
-                          },
-                        }}
-                      />
-                    </span>
+                    <ClubLogo
+                      wrapperClasses="w-8 h-8 relative"
+                      id={standing.clubTeamClubId}
+                      name={standing.standingsTeamName}
+                      imageProps={{
+                        fill: true,
+                        sizes: "32px",
+                        style: {
+                          objectFit: "contain",
+                          objectPosition: "center center",
+                        },
+                      }}
+                    />
                     <a
                       className={clsx(
                         "overflow-hidden text-ellipsis whitespace-nowrap max-w-32 sm:max-w-52 md:max-w-64",

@@ -111,20 +111,19 @@ const Matches = ({ matches, team, header }: Props) => {
               >
                 <div className="flex justify-between w-full">
                   <span className="flex-1 items-center flex flex-col justify-center text-sm">
-                    <div className="relative h-9 w-9">
-                      <ClubLogo
-                        id={match.homeTeamClubId}
-                        name={match.matchHomeTeamName}
-                        imageProps={{
-                          fill: true,
-                          sizes: "36px",
-                          style: {
-                            objectFit: "contain",
-                            objectPosition: "center center",
-                          },
-                        }}
-                      />
-                    </div>
+                    <ClubLogo
+                      wrapperClasses="relative h-9 w-9"
+                      id={match.homeTeamClubId}
+                      name={match.matchHomeTeamName}
+                      imageProps={{
+                        fill: true,
+                        sizes: "36px",
+                        style: {
+                          objectFit: "contain",
+                          objectPosition: "center center",
+                        },
+                      }}
+                    />
                     {renderHomeTeam(match)}
                   </span>
                   <div className="flex flex-col flex-1">
@@ -140,20 +139,19 @@ const Matches = ({ matches, team, header }: Props) => {
                     ) : null}
                   </div>
                   <span className="flex-1 items-center flex flex-col justify-center text-sm">
-                    <div className="relative h-9 w-9">
-                      <ClubLogo
-                        id={match.awayTeamClubId}
-                        name={match.matchAwayTeamName}
-                        imageProps={{
-                          fill: true,
-                          sizes: "36px",
-                          style: {
-                            objectFit: "contain",
-                            objectPosition: "center center",
-                          },
-                        }}
-                      />
-                    </div>
+                    <ClubLogo
+                      wrapperClasses="relative h-9 w-9"
+                      id={match.awayTeamClubId}
+                      name={match.matchAwayTeamName}
+                      imageProps={{
+                        fill: true,
+                        sizes: "36px",
+                        style: {
+                          objectFit: "contain",
+                          objectPosition: "center center",
+                        },
+                      }}
+                    />
                     {renderAwayTeam(match)}
                   </span>
                 </div>

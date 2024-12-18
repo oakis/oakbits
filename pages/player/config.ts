@@ -1,3 +1,5 @@
+import { PaginationSizes } from "@/components/Table/Pagination";
+
 export interface Player {
   licNbr: string;
   firstName: string;
@@ -18,4 +20,5 @@ export interface PlayerData {
 export interface Props {
   players: Player[];
   totalPlayers: number;
+  defaultPageSize?: PaginationSizes;
 }

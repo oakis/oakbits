@@ -1,12 +1,19 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Main from "@/components/Main";
 import { fetchFromBits } from "@/utils/swebowl";
-import { Props, PlayerData } from "./config";
+import { Props, ClubData } from "./config";
+import Table, {
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeadCell,
+  TableRow,
+} from "@/components/Table";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import useIsMobile from "@/hooks/useIsMobile";
 import { useRouter } from "next/router";
-import PlayerTable from "@/components/PlayerTable";
+import Pagination from "@/components/Table/Pagination";
 
 interface Query {
   [key: string]: string;
@@ -17,42 +24,40 @@ export const getServerSideProps = (async (context) => {
 
   const search = query.search ?? "";
   const size = query.size ?? "10";
-  const active = query.active === "false" ? false : true;
   const page = query.page ?? "1";
 
-  const players: PlayerData = await fetchFromBits("player/GetAll", undefined, {
+  const clubs: ClubData = await fetchFromBits("club/searchClubs", undefined, {
     search,
-    TakeOnlyActive: active,
     take: size,
     skip: (parseInt(page) - 1) * parseInt(size),
     page,
     pageSize: size,
-    sort: [{ field: "firstName", dir: "asc" }],
+    sort: [{ field: "clubName", dir: "asc" }],
   });
 
   return {
     props: {
-      players: players.data,
-      totalPlayers: players.total,
+      clubs: clubs.data.map((club) => ({
+        county: club.county,
+        hallId: club.clubHallId,
+        hallName: club.hallName,
+        id: club.clubId,
+        name: club.clubName,
+      })),
+      totalClubs: clubs.total,
     },
   };
 }) satisfies GetServerSideProps<Props>;
 
 export default function Page({
-  players,
-  totalPlayers,
+  clubs,
+  totalClubs,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { query, push, pathname } = useRouter();
   const isMobile = useIsMobile();
 
   const [filter, setFilter] = useState(query.search ?? "");
-  const [active, setActive] = useState(query.active === "false" ? false : true);
   const [dirty, setDirty] = useState(false);
-
-  const toggleCheckbox = () => {
-    setDirty(true);
-    setActive(!active);
-  };
 
   const onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDirty(true);
@@ -65,7 +70,6 @@ export default function Page({
         const newQuery = {
           ...query,
           search: filter || undefined,
-          active: active ? "true" : "false",
         };
 
         push({
@@ -77,7 +81,7 @@ export default function Page({
       return () => clearTimeout(timeoutId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filter, active]);
+  }, [filter]);
 
   return (
     <Main classes="px-4 gap-4">
@@ -89,24 +93,41 @@ export default function Page({
             "px-2 py-1 pr-8 rounded-md bg-slate-100 relative",
             isMobile && "w-full"
           )}
-          placeholder="Sök efter namn eller förening.."
+          placeholder="Sök efter förening.."
         />
-        <div className="flex flex-row gap-2">
-          <label htmlFor="active">Aktiv</label>
-          <input
-            id="active"
-            checked={active}
-            type="checkbox"
-            onChange={toggleCheckbox}
-          />
-        </div>
       </div>
-      {players.length === 0 ? (
+      {clubs.length === 0 ? (
         <span className="text-lg text-center">
-          Hittade inga licenser. Prova att söka på något annat.
+          Hittade inga klubbar. Prova att söka på något annat.
         </span>
       ) : (
-        <PlayerTable players={players} totalPlayers={totalPlayers} />
+        <Table>
+          <TableHead>
+            <TableRow index={0} classes="bg-slate-600 text-slate-100">
+              <TableHeadCell classes="!text-left">Förening</TableHeadCell>
+              <TableHeadCell classes="!text-left">Distrikt</TableHeadCell>
+              <TableHeadCell classes="!text-left">Hall</TableHeadCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {clubs.map((club, i) => (
+              <TableRow key={club.id} index={i + 1}>
+                <TableCell classes="!text-left">
+                  <a href={`/club/${club.id}`}>{club.name}</a>
+                </TableCell>
+                <TableCell classes="!text-left">{club.county}</TableCell>
+                <TableCell classes="!text-left">{club.hallName}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+          <tfoot>
+            <TableRow index={0} classes="bg-slate-600 text-slate-100">
+              <TableCell colSpan={3}>
+                <Pagination total={totalClubs} />
+              </TableCell>
+            </TableRow>
+          </tfoot>
+        </Table>
       )}
     </Main>
   );

@@ -1,9 +1,11 @@
 import clsx from "clsx";
+import Link from "next/link";
 
 interface CardProps {
   title: string;
   value: number | string;
   classes?: string;
+  href?: string;
 }
 
 const Card = (props: CardProps) => {
@@ -15,7 +17,13 @@ const Card = (props: CardProps) => {
       )}
     >
       <span className="uppercase text-xs">{props.title}</span>
-      <span className="uppercase text-lg font-bold">{props.value}</span>
+      {props.href ? (
+        <Link href={props.href}>
+          <span className="uppercase text-lg font-bold">{props.value}</span>
+        </Link>
+      ) : (
+        <span className="uppercase text-lg font-bold">{props.value}</span>
+      )}
     </div>
   );
 };
