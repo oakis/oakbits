@@ -15,9 +15,6 @@ import useIsMobile from "@/hooks/useIsMobile";
 import { useRouter } from "next/router";
 import Pagination from "@/components/Table/Pagination";
 
-const twoDecimals = (num: number): string | number =>
-  num === 0 ? "-" : num.toFixed(2);
-
 interface Query {
   [key: string]: string;
 }
@@ -61,10 +58,6 @@ export default function Page({
 
   const [filter, setFilter] = useState(query.search ?? "");
   const [dirty, setDirty] = useState(false);
-
-  const toggleCheckbox = () => {
-    setDirty(true);
-  };
 
   const onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDirty(true);
