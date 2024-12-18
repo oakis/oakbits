@@ -8,6 +8,7 @@ import Table, {
 } from "@/components/Table";
 import { CompetitionGame } from "./config";
 import { formatDate } from "@/utils/date";
+import Link from "next/link";
 
 interface MatchesProps {
   games: CompetitionGame[];
@@ -23,6 +24,7 @@ const Matches = ({ games, gameType, title }: MatchesProps) => {
       <Table autoHeight>
         <TableHead>
           <TableHeader>
+            {gameType === "match" && <TableHeadCell>Match ID</TableHeadCell>}
             <TableHeadCell classes="!text-left">Tävling</TableHeadCell>
             <TableHeadCell>Placering</TableHeadCell>
             <TableHeadCell>Kategori</TableHeadCell>
@@ -38,6 +40,11 @@ const Matches = ({ games, gameType, title }: MatchesProps) => {
         <TableBody>
           {games.map((game, i) => (
             <TableRow key={game.id} index={i}>
+              {gameType === "match" && (
+                <TableCell classes="!text-left">
+                  <Link href={`/match/${game.id}`}>{game.id}</Link>
+                </TableCell>
+              )}
               <TableCell classes="!text-left">{game.name}</TableCell>
               <TableCell>{game.placement}</TableCell>
               <TableCell>{game.category}</TableCell>
