@@ -67,7 +67,9 @@ jobs:
         env:
           DATADOG_SITE: "datadoghq.eu"
           DATADOG_API_HOST: "api.datadoghq.eu"
-        run: npx datadog-ci sourcemaps upload --service nextjs-app --release-version ${{ github.sha }} --minified-path .next/static --api-key ${{ secrets.NEXT_PUBLIC_DATADOG_TOKEN }}
+        run: |
+          npm install -g @datadog/datadog-ci
+          datadog-ci sourcemaps upload --service nextjs-app --release-version ${{ github.sha }} --minified-path .next/static --api-key ${{ secrets.NEXT_PUBLIC_DATADOG_TOKEN }}
 
       - name: Release
         env:
