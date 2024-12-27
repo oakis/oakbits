@@ -63,6 +63,12 @@ jobs:
             docker rm nextjs-app || true
             docker run -d -p 3000:3000 --name nextjs-app oakis/nextjs-app:latest
 
+      - name: Upload Datadog Sourcemaps
+        env:
+          DATADOG_SITE: "datadoghq.eu"
+          DATADOG_API_HOST: "api.datadoghq.eu"
+        run: npx datadog-ci sourcemaps upload --service nextjs-app --release-version ${{ github.sha }} --minified-path .next/static --api-key ${{ secrets.NEXT_PUBLIC_DATADOG_TOKEN }}
+
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
