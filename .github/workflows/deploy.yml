@@ -69,7 +69,7 @@ jobs:
           DATADOG_API_HOST: "api.datadoghq.eu"
           DATADOG_API_KEY: ${{ secrets.DATADOG_API_KEY }}
         run: |
-          npm build
+          npm run build
           ls -al 
           npm install -g @datadog/datadog-ci
           datadog-ci sourcemaps upload ./.next/ \
