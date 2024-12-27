@@ -70,10 +70,10 @@ jobs:
           DATADOG_API_KEY: ${{ secrets.DATADOG_API_KEY }}
         run: |
           npm install -g @datadog/datadog-ci
-          datadog-ci sourcemaps upload .next/static/chunks/ \
+          datadog-ci sourcemaps upload ./.next/ \
             --service=nextjs-app \
             --release-version=${{ github.sha }} \
-            --minified-path-prefix=https://bits.oakis.se/_next/static/chunks/
+            --minified-path-prefix=https://bits.oakis.se/_next/
 
       - name: Release
         env:
