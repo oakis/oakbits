@@ -70,7 +70,10 @@ jobs:
           DATADOG_API_KEY: ${{ secrets.NEXT_PUBLIC_DATADOG_TOKEN }}
         run: |
           npm install -g @datadog/datadog-ci
-          datadog-ci sourcemaps upload .next/static/ --service=nextjs-app --release-version=${{ github.sha }} --minified-path-prefix=/_next/static/
+          datadog-ci sourcemaps upload .next/static/ \
+            --service=nextjs-app \
+            --release-version=${{ github.sha }} \
+            --minified-path-prefix=https://bits.oakis.se/_next/static/
 
       - name: Release
         env:
