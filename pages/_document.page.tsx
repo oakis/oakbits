@@ -4,6 +4,12 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
+        <script
+          type="text/javascript"
+          charSet="UTF-8"
+          src="//cdn.cookie-script.com/s/fdfda4064a3604adeafbb426af2d107d.js"
+          async
+        ></script>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link
