@@ -21,7 +21,7 @@ const Matches = ({ games, gameType, title }: MatchesProps) => {
   return (
     <div className="flex flex-col gap-4">
       <h2 className="text-2xl font-semibold">{title}</h2>
-      <Table autoHeight>
+      <Table autoHeight items={games}>
         <TableHead>
           <TableHeader>
             {gameType === "match" && <TableHeadCell>Match ID</TableHeadCell>}
