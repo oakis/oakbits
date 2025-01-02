@@ -9,7 +9,10 @@ export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
     if (process.env.NEXT_PUBLIC_ENV === "local") return;
 
-    if (typeof window.Cookiebot !== "undefined" && window.Cookiebot.consented) {
+    if (
+      typeof window.CookieScript !== "undefined" &&
+      window.CookieScript.instance.currentState().action === "accept"
+    ) {
       initializeDatadogRum();
     }
   }, []);
