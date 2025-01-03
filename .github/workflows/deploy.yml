@@ -58,6 +58,9 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key_path: /home/runner/.ssh/id_rsa
           script: |
+            # Clean up unused Docker images
+            docker image prune -a --force
+            # Pull and run the latest Docker image
             docker pull oakis/nextjs-app:latest
             docker stop nextjs-app || true
             docker rm nextjs-app || true
