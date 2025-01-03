@@ -81,3 +81,11 @@ jobs:
             --service=nextjs-app \
             --release-version=${{ github.sha }} \
             --minified-path-prefix=https://bits.oakis.se/_next/
+
+      - name: Clear Cloudflare Cache
+        run: |
+          curl https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE_ID }}/purge_cache \
+            -H 'Content-Type: application/json' \
+            -H "X-Auth-Email: ${{ secrets.CLOUDFLARE_EMAIL }}" \
+            -H "X-Auth-Key: ${{ secrets.CLOUDFLARE_API_KEY }}" \
+            -d '{ "purge_everything": true }'
