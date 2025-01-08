@@ -60,7 +60,7 @@ const Pagination = ({ total, defaultSize }: PaginationProps) => {
   );
 
   return (
-    <div className="flex flex-row">
+    <div className="flex flex-row gap-4">
       <div className="flex flex-row">
         <button
           onClick={goToPrev}
@@ -69,7 +69,11 @@ const Pagination = ({ total, defaultSize }: PaginationProps) => {
         >
           <FaCaretLeft size="24" />
         </button>
-        <Select value={page} items={items} onChange={onSelectPage} />
+        <Select
+          value={page}
+          items={items}
+          onChange={onSelectPage}
+        />
         <button
           onClick={goToNext}
           disabled={page * parseInt(size) > total}
@@ -78,8 +82,13 @@ const Pagination = ({ total, defaultSize }: PaginationProps) => {
           <FaCaretRight size="24" />
         </button>
       </div>
-      <div className="flex flex-row">
-        <Select value={size} items={sizes} onChange={onSelectSize} />
+      <div className="flex flex-row gap-4 items-center">
+        <Select
+          value={size}
+          items={sizes}
+          onChange={onSelectSize}
+          wrapperClasses="px-0"
+        />
         <span>per sida</span>
       </div>
     </div>
