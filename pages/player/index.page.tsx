@@ -1,12 +1,14 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Main from "@/components/Main";
-import { fetchFromBits } from "@/utils/swebowl";
-import { Props, PlayerData } from "./config";
+import { Props, Player, PlayerData } from "./config";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import useIsMobile from "@/hooks/useIsMobile";
 import { useRouter } from "next/router";
 import PlayerTable from "@/components/PlayerTable";
+import { SortConfig } from "@/hooks/useSort";
+import { fetchFromAPI } from "@/utils/network";
+import { fetchFromBits } from "@/utils/swebowl";
 
 interface Query {
   [key: string]: string;
@@ -30,6 +32,8 @@ export const getServerSideProps = (async (context) => {
     sort: [{ field: "firstName", dir: "asc" }],
   });
 
+  console.log("HELLO FROM GETSERVERSIDEPROPS");
+
   return {
     props: {
       players: players.data,
@@ -39,15 +43,18 @@ export const getServerSideProps = (async (context) => {
 }) satisfies GetServerSideProps<Props>;
 
 export default function Page({
-  players,
+  players: playersData,
   totalPlayers,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { query, push, pathname } = useRouter();
   const isMobile = useIsMobile();
 
+  const [players, setPlayers] = useState<Player[]>(playersData);
   const [filter, setFilter] = useState(query.search ?? "");
   const [active, setActive] = useState(query.active === "false" ? false : true);
   const [dirty, setDirty] = useState(false);
+
+  console.log({ players });
 
   const toggleCheckbox = () => {
     setDirty(true);
@@ -57,6 +64,31 @@ export default function Page({
   const onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDirty(true);
     setFilter(event.target.value);
+  };
+
+  const onSortCallback = async (config: SortConfig) => {
+    console.log({ config });
+    const search = query.search ?? "";
+    const size = (query.size as string) ?? "10";
+    const active = query.active === "false" ? false : true;
+    const page = (query.page as string) ?? "1";
+
+    const response = await fetchFromAPI("/api/players", {
+      method: "POST",
+      body: JSON.stringify({
+        search,
+        active,
+        size,
+        page,
+        sort: [{ field: config.key, dir: config.direction }],
+      }),
+    });
+
+    const newPlayers: PlayerData = await response.json();
+
+    console.log({ newPlayers });
+
+    setPlayers(newPlayers.data);
   };
 
   useEffect(() => {
@@ -106,7 +138,11 @@ export default function Page({
           Hittade inga licenser. Prova att söka på något annat.
         </span>
       ) : (
-        <PlayerTable players={players} totalPlayers={totalPlayers} />
+        <PlayerTable
+          players={players}
+          totalPlayers={totalPlayers}
+          onSortCallback={onSortCallback}
+        />
       )}
     </Main>
   );

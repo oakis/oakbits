@@ -6,13 +6,11 @@ import TableHead from "./TableHead";
 import TableHeadCell from "./TableHeadCell";
 import TableHeader from "./TableHeader";
 import TableRow from "./TableRow";
-import { TableProvider } from "./context";
 
-interface Props<T> extends PropsWithChildren {
+interface Props extends PropsWithChildren {
   classes?: string;
   wrapperClasses?: string;
   autoHeight?: boolean;
-  items: T[];
 }
 
 const Table = ({
@@ -20,18 +18,15 @@ const Table = ({
   classes,
   wrapperClasses,
   autoHeight = false,
-  items,
-}: Props<unknown>) => (
-  <TableProvider value={{ items }}>
-    <div
-      className={clsx("block overflow-auto w-full", wrapperClasses)}
-      style={autoHeight ? {} : { maxHeight: "calc(100vh - 76px)" }}
-    >
-      <table className={clsx("table-auto w-full relative", classes)}>
-        {children}
-      </table>
-    </div>
-  </TableProvider>
+}: Props) => (
+  <div
+    className={clsx("block overflow-auto w-full", wrapperClasses)}
+    style={autoHeight ? {} : { maxHeight: "calc(100vh - 76px)" }}
+  >
+    <table className={clsx("table-auto w-full relative", classes)}>
+      {children}
+    </table>
+  </div>
 );
 
 export default Table;

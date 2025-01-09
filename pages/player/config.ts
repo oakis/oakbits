@@ -1,4 +1,5 @@
 import { PaginationSizes } from "@/components/Table/Pagination";
+import { SortConfig } from "@/hooks/useSort";
 
 export interface Player {
   licNbr: string;
@@ -21,4 +22,5 @@ export interface Props {
   players: Player[];
   totalPlayers: number;
   defaultPageSize?: PaginationSizes;
+  onSortCallback?: ({ direction, key }: SortConfig) => void;
 }
