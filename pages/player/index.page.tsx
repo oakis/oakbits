@@ -1,13 +1,11 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Main from "@/components/Main";
-import { Props, Player, PlayerData } from "./config";
+import { Props, PlayerData } from "./config";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import useIsMobile from "@/hooks/useIsMobile";
 import { useRouter } from "next/router";
 import PlayerTable from "@/components/PlayerTable";
-import { SortConfig } from "@/hooks/useSort";
-import { fetchFromAPI } from "@/utils/network";
 import { fetchFromBits } from "@/utils/swebowl";
 
 interface Query {
@@ -21,6 +19,8 @@ export const getServerSideProps = (async (context) => {
   const size = query.size ?? "10";
   const active = query.active === "false" ? false : true;
   const page = query.page ?? "1";
+  const sortKey = query.sortKey ?? "firstName";
+  const sortDir = query.sortDir ?? "asc";
 
   const players: PlayerData = await fetchFromBits("player/GetAll", undefined, {
     search,
@@ -29,10 +29,8 @@ export const getServerSideProps = (async (context) => {
     skip: (parseInt(page) - 1) * parseInt(size),
     page,
     pageSize: size,
-    sort: [{ field: "firstName", dir: "asc" }],
+    sort: [{ field: sortKey, dir: sortDir }],
   });
-
-  console.log("HELLO FROM GETSERVERSIDEPROPS");
 
   return {
     props: {
@@ -43,18 +41,15 @@ export const getServerSideProps = (async (context) => {
 }) satisfies GetServerSideProps<Props>;
 
 export default function Page({
-  players: playersData,
+  players,
   totalPlayers,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { query, push, pathname } = useRouter();
   const isMobile = useIsMobile();
 
-  const [players, setPlayers] = useState<Player[]>(playersData);
   const [filter, setFilter] = useState(query.search ?? "");
   const [active, setActive] = useState(query.active === "false" ? false : true);
   const [dirty, setDirty] = useState(false);
-
-  console.log({ players });
 
   const toggleCheckbox = () => {
     setDirty(true);
@@ -64,31 +59,6 @@ export default function Page({
   const onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDirty(true);
     setFilter(event.target.value);
-  };
-
-  const onSortCallback = async (config: SortConfig) => {
-    console.log({ config });
-    const search = query.search ?? "";
-    const size = (query.size as string) ?? "10";
-    const active = query.active === "false" ? false : true;
-    const page = (query.page as string) ?? "1";
-
-    const response = await fetchFromAPI("/api/players", {
-      method: "POST",
-      body: JSON.stringify({
-        search,
-        active,
-        size,
-        page,
-        sort: [{ field: config.key, dir: config.direction }],
-      }),
-    });
-
-    const newPlayers: PlayerData = await response.json();
-
-    console.log({ newPlayers });
-
-    setPlayers(newPlayers.data);
   };
 
   useEffect(() => {
@@ -141,7 +111,7 @@ export default function Page({
         <PlayerTable
           players={players}
           totalPlayers={totalPlayers}
-          onSortCallback={onSortCallback}
+          useQuerySort
         />
       )}
     </Main>

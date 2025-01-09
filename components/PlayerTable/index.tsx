@@ -17,23 +17,18 @@ const PlayerTable = ({
   players,
   totalPlayers,
   defaultPageSize,
-  onSortCallback,
+  useQuerySort,
 }: Props) => {
-  const { items, handleSort, sortConfig } = useSort(players);
+  const { items, handleSort, sortConfig } = useSort(players, useQuerySort);
 
   const onSort = (value: string) => {
-    if (onSortCallback) {
-      handleSort(value);
-      onSortCallback(sortConfig);
-    } else {
-      handleSort(value);
-    }
+    handleSort(value);
   };
 
   const renderSortIcon = (key: string) =>
     sortConfig.key === key ? (
       <span className="text-xs">
-        {sortConfig.direction === "desc" ? "▲" : "▼"}
+        {sortConfig.direction === "asc" ? "▲" : "▼"}
       </span>
     ) : null;
 
